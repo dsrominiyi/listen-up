@@ -1,0 +1,8 @@
+# dependencies
+/client/node_modules
+
+# production
+/client/public/app
+
+# misc
+npm-debug.log*
