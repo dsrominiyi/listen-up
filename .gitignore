@@ -5,4 +5,4 @@
 /client/public/app
 
 # misc
-npm-debug.log*
+/client/npm-debug.log*
