@@ -10,8 +10,7 @@ import ApiClient from '../services/ApiClient';
 
 import * as multiChoiceActions from '../actions/multiChoiceActions';
 
-import { BASE_POINTS } from '../constants/common';
-import { BASE_URL } from '../constants/common';
+import { BASE_POINTS, BASE_URL } from '../constants/common';
 
 class MultiChoice extends Component {
 

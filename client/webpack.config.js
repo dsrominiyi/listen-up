@@ -11,16 +11,25 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
+        exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react']
+          presets: [ 'env', 'react', 'stage-0' ]
         }
       }
-    ]
+    ],
+    // Disable handling of requires with a single expression
+    exprContextRegExp: /$^/,
+    exprContextCritical: false
+  },
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
   },
   stats: {
     colors: true
   },
-  devtool: 'sourcemap',
+  devtool: 'source-map',
   devServer: {
     contentBase: __dirname + '/public',
     publicPath: '/app/',
