@@ -1,0 +1,1 @@
+export const MULTI_CHOICE_GET_NEW = 'MULTI_CHOICE/GET_NEW';

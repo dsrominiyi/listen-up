@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactPlayer from 'react-player';
+import { connect } from 'react-redux';
 
+import ReactPlayer from 'react-player';
 import ChoiceGrid from '../components/ChoiceGrid';
 import AnswerOverlay from '../components/AnswerOverlay';
 
-import { BASE_POINTS } from '../constants';
+import ApiClient from '../services/ApiClient';
 
-export default class MultiChoice extends Component {
+import * as multiChoiceActions from '../actions/multiChoiceActions';
+
+import { BASE_POINTS } from '../constants/common';
+import { BASE_URL } from '../constants/common';
+
+class MultiChoice extends Component {
 
   static propTypes = {
     choices: PropTypes.array.isRequired,
     sound: PropTypes.object.isRequired,
     maxPlays: PropTypes.number.isRequired,
-    getNewSound: PropTypes.func.isRequired
+    getNewQuestion: PropTypes.func.isRequired
   }
 
   state = {
@@ -50,7 +56,7 @@ export default class MultiChoice extends Component {
     this.setState({
       showOverlay: true
     });
-    this.props.getNewSound();
+    this.props.getNewQuestion();
   }
 
   correctAnswer(points) {
@@ -59,7 +65,7 @@ export default class MultiChoice extends Component {
       isCorrectAnswer: true,
       showOverlay: true
     });
-    this.props.getNewSound();
+    this.props.getNewQuestion();
   }
 
   nextSound() {
@@ -70,7 +76,7 @@ export default class MultiChoice extends Component {
   }
 
   componentDidMount() {
-    this.props.getNewSound();
+    this.props.getNewQuestion();
   }
 
   render() {
@@ -117,3 +123,21 @@ export default class MultiChoice extends Component {
     );
   }
 }
+
+const api = new ApiClient(BASE_URL);
+
+const mapStateToProps = state => {
+  return {
+    choices: state.choices,
+    sound: state.sound,
+    maxPlays: state.maxPlays
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getNewQuestion: () => dispatch(multiChoiceActions.getNewQuestion(api))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MultiChoice);

@@ -11,6 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.0",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-airbnb": "^2.4.0",
@@ -19,12 +20,18 @@
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.1.2",
     "enzyme": "^2.9.1",
+    "enzyme-redux": "^0.1.6",
     "eslint": "^4.6.1",
     "eslint-plugin-react": "^7.3.0",
     "mocha": "^3.5.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
     "react-test-renderer": "^15.6.1",
+    "redux": "^3.7.2",
+    "redux-promise-middleware": "^4.4.1",
+    "redux-test-utils": "^0.1.2",
+    "redux-thunk": "^2.2.0",
     "sinon": "^3.2.1",
     "sinon-chai": "^2.13.0",
     "webpack": "^3.5.6",
@@ -33,10 +40,13 @@
   "dependencies": {
     "material-ui": "^0.19.1",
     "prop-types": "^15.5.10",
+    "proxyquire": "^1.8.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-player": "^0.24.4",
     "react-tap-event-plugin": "^2.0.1",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
     "simple-react-player": "0.0.2"
   }
 }

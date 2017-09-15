@@ -1,29 +1,42 @@
 import React from 'react';
 import '../../../node_modules/enzyme/mount';
-import { shallow } from 'enzyme';
+import { shallowWithStore } from 'enzyme-redux';
+import { createMockStore } from 'redux-test-utils';
 import sinon from 'sinon';
+import proxyquire from 'proxyquire';
 
-import MultiChoice from '../../../src/containers/MultiChoice';
+import * as multiChoiceActions from '../../../src/actions/multiChoiceActions';
 
-import { BASE_POINTS } from '../../../src/constants';
+import { BASE_POINTS } from '../../../src/constants/common';
+
+const ApiClient = function() { return { get: sinon.spy() }; };
+proxyquire.noCallThru();
+const module = proxyquire(
+  '../../../src/containers/MultiChoice',
+  {
+    '../services/ApiClient': ApiClient
+  }
+);
+const MultiChoice = module.default;
 
 describe('<MultiChoice />', () => {
 
   let component;
+  let store;
   let choices;
   let sound;
   let maxPlays;
-  let getNewSound;
+  let api;
 
   const initialise = () => {
-    component = shallow(
-      <MultiChoice 
-        choices={choices} 
-        sound={sound} 
-        maxPlays={maxPlays} 
-        getNewSound={getNewSound} 
-      />
-    );
+    const state = {
+      choices,
+      sound,
+      maxPlays
+    };
+
+    store = createMockStore(state);
+    component = shallowWithStore(<MultiChoice />, store).dive();
   };
 
   beforeEach(() => {
@@ -41,15 +54,18 @@ describe('<MultiChoice />', () => {
       answerId: 2
     };
     maxPlays = 3;
-    getNewSound = sinon.spy();
+    
+    api = new ApiClient();
     
     initialise();
   });
 
   it('should retrieve a question when the component has mounted', () => {
-    
+    const expectedAction = multiChoiceActions.getNewQuestion(api);
+
     component.instance().componentDidMount();
-    expect(getNewSound).to.have.been.called;
+    expect(store.isActionDispatched(expectedAction)).to.equal(true);
+    expect(api.get).to.have.been.calledWith('/multi/new');
   });
 
   it('should render the audio player', () => {
@@ -97,11 +113,14 @@ describe('<MultiChoice />', () => {
     expect(component.state().showOverlay).to.equal(true);
   });
 
-  it('should retrieve a new sound on a correct choice', () => {
+  it('should retrieve a new question on a correct choice', () => {
     
     const correctAnswerId = sound.answerId;
     component.instance().checkAnswer(correctAnswerId);
-    expect(getNewSound).to.have.been.called;
+
+    const expectedAction = multiChoiceActions.getNewQuestion(api);
+    expect(store.isActionDispatched(expectedAction)).to.equal(true);
+    expect(api.get).to.have.been.calledWith('/multi/new');
   });
 
 
@@ -112,11 +131,14 @@ describe('<MultiChoice />', () => {
     expect(component.state().showOverlay).to.equal(true);
   });
 
-  it('should retrieve a new sound on an incorrect choice', () => {
+  it('should retrieve a new question on an incorrect choice', () => {
     
     const wrongAnswerId = sound.answerId + 1;
     component.instance().checkAnswer(wrongAnswerId);
-    expect(getNewSound).to.have.been.called;
+
+    const expectedAction = multiChoiceActions.getNewQuestion(api);
+    expect(store.isActionDispatched(expectedAction)).to.equal(true);
+    expect(api.get).to.have.been.calledWith('/multi/new');
   });
 
   it('should not render the answer overlay when showOverlay is false', () => {
