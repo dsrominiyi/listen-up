@@ -39,7 +39,7 @@ class MultiChoice extends Component {
     const { sound } = this.props;
 
     if (choiceId !== sound.answerId) {
-      this.wrongAnswer();
+      return this.wrongAnswer();
     }
 
     const { playCount } = this.state;
@@ -65,13 +65,6 @@ class MultiChoice extends Component {
       showOverlay: true
     });
     this.props.getNewQuestion();
-  }
-
-  nextSound() {
-    this.setState({
-      isCorrectAnswer: false,
-      showOverlay: false
-    });
   }
 
   componentDidMount() {

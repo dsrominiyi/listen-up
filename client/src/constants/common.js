@@ -1,4 +1,4 @@
-export const BASE_URL = 'listen-up.local';
+export const BASE_URL = 'http://localhost:6307';
 
 export const BASE_POINTS = 100;
 

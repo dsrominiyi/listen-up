@@ -1,9 +1,6 @@
 {
-  "plugins": [
-    "react"
-  ],
   "env": {
-    "browser": true,
+    "node": true,
     "es6": true,
     "jasmine": true
   },
@@ -11,7 +8,6 @@
   "parserOptions": { 
     "ecmaVersion": 2017,
     "ecmaFeatures": {
-      "jsx": true,
       "modules": true
     },
     "sourceType": "module" 
@@ -85,11 +81,6 @@
       }
     ],
     "no-undef": 2,
-    "keyword-spacing": 2,
-    "react/jsx-uses-react": 2,
-    "react/jsx-uses-vars": 2,
-    "react/react-in-jsx-scope": 2,
-    "react/prefer-stateless-function": 2,
-    "react/prop-types": 2
+    "keyword-spacing": 2
   }
 }
