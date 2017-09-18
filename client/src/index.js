@@ -8,6 +8,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 
+import './style/index.scss';
+
 import MultiChoice from './containers/MultiChoice';
 
 import multiChoiceReducer from './reducers/multiChoiceReducer';

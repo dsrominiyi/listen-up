@@ -5,20 +5,18 @@ import { GridList, GridTile } from 'material-ui/GridList';
 const ChoiceGrid = ({ choices, onChoiceMade }) => {
 
   return (
-    <div>
-      <GridList
-        className="choice-grid-list"
-        cellHeight={180}
-      >
+    <div className="choice-grid">
+      <GridList cellHeight={200}>
         {
           choices.map(choice => (
             <GridTile
-              className="choice-grid-tile"
+              className="tile hover-bw"
               key={choice.id}
               title={choice.text}
+              titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
               onClick={() => onChoiceMade(choice.id)}
             >
-              <img className="choice-img" src={choice.img} />
+              <img className="tile-img" src={choice.img} />
             </GridTile>
           ))
         }

@@ -34,13 +34,13 @@ describe('<ChoiceGrid />', () => {
 
   it('should contain a tile for each choice', () => {
 
-    const tiles = component.find('.choice-grid-tile');
+    const tiles = component.find('.tile');
     expect(tiles).to.have.length(choices.length);
   });
 
   it('should populate each tile with the correct data', () => {
     
-    const tiles = component.find('.choice-grid-tile');
+    const tiles = component.find('.tile');
 
     for (let i=0; i<choices.length; i++) {
       const tile = tiles.get(i);
@@ -56,7 +56,7 @@ describe('<ChoiceGrid />', () => {
 
   it('should call onChoiceMade with the choice id when a tile is clicked', () => {
     
-    const tiles = component.find('.choice-grid-tile');
+    const tiles = component.find('.tile');
 
     for (let i=0; i<choices.length; i++) {
       const tile = tiles.get(i);

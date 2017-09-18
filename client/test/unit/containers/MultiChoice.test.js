@@ -71,8 +71,8 @@ describe('<MultiChoice />', () => {
   it('should render the audio player', () => {
     
     const player = component.find('.audio-player');
-    expect(player.props().url).to.equal(sound.src);
-    expect(player.props().onEnded).to.equal(component.instance().incrementPlays);
+    expect(player.props().playlist[0].url).to.equal(sound.src);
+    expect(player.props().onMediaEvent.ended).to.equal(component.instance().incrementPlays);
   });
 
   it('should render the choice grid', () => {

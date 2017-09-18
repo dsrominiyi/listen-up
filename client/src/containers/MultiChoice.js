@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import ReactPlayer from 'react-player';
+import AudioPlayer from 'react-responsive-audio-player';
 import ChoiceGrid from '../components/ChoiceGrid';
 import AnswerOverlay from '../components/AnswerOverlay';
 
@@ -29,13 +29,21 @@ class MultiChoice extends Component {
     showOverlay: false
   };
 
-  incrementPlays() {
+  incrementPlays = () => {
     let { playCount } = this.state;
     playCount++;
     this.setState({ playCount });
   }
 
-  checkAnswer(choiceId) {
+  canPlay = () => {
+    const { maxPlays } = this.props;
+    const { playCount } = this.state;
+    if (maxPlays === playCount) {
+      this.audioElement.pause();
+    }
+  }
+
+  checkAnswer = (choiceId) => {
     const { sound } = this.props;
 
     if (choiceId !== sound.answerId) {
@@ -51,14 +59,14 @@ class MultiChoice extends Component {
     this.correctAnswer(pointsAwarded);
   }
 
-  wrongAnswer() {
+  wrongAnswer = () => {
     this.setState({
       showOverlay: true
     });
     this.props.getNewQuestion();
   }
 
-  correctAnswer(points) {
+  correctAnswer = (points) => {
     this.setState({
       score: this.state.score + points,
       isCorrectAnswer: true,
@@ -73,27 +81,40 @@ class MultiChoice extends Component {
 
   render() {
 
-    const { choices, sound } = this.props;
-    const { isCorrectAnswer, showOverlay } = this.state;
+    const { choices, sound, maxPlays } = this.props;
+    const { isCorrectAnswer, showOverlay, playCount } = this.state;
 
     const correctChoice = choices.filter(choice => (choice.id === sound.answerId))[0];
+
+    const playsLeft = maxPlays - playCount;
 
     return (
       <div className="multi-choice">
 
-        <span>Name the sound!</span>
+        <div className="main-container">
+          <AudioPlayer
+            className="audio-player"
+            hideBackSkip={true}
+            hideForwardSkip={true}
+            disableSeek={true}
+            cycle={false}
+            onMediaEvent={{ 
+              ended: this.incrementPlays,
+              play: this.canPlay
+            }}
+            playlist={[{ 
+              url: sound.src, 
+              displayText: `Name the sound! (plays left: ${playsLeft})` 
+            }]}
+            audioElementRef={ref => this.audioElement = ref}
+          />
 
-        <ReactPlayer
-          className="audio-player"
-          url={sound.src}
-          onEnded={this.incrementPlays}
-        />
-
-        <ChoiceGrid
-          className="choice-grid"
-          choices={choices}
-          onChoiceMade={choiceId => this.checkAnswer(choiceId)}
-        />
+          <ChoiceGrid
+            className="choice-grid"
+            choices={choices}
+            onChoiceMade={choiceId => this.checkAnswer(choiceId)}
+          />
+        </div>
 
         {
           showOverlay
@@ -103,6 +124,7 @@ class MultiChoice extends Component {
                 isCorrect={isCorrectAnswer}
                 correctChoice={correctChoice}
                 onContinue={() => this.setState({
+                  playCount: 0,
                   isCorrectAnswer: false,
                   showOverlay: false
                 })}

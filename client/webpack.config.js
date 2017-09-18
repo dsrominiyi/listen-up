@@ -15,6 +15,11 @@ module.exports = {
         query: {
           presets: [ 'env', 'react', 'stage-0' ]
         }
+      },
+      {
+        test: /\.scss$/,
+        loader: 'style-loader!css-loader!sass-loader?sourceMap',
+        exclude: /node_modules/
       }
     ],
     // Disable handling of requires with a single expression

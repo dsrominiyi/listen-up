@@ -1,0 +1,7 @@
+/* img black & white */
+.hover-bw {
+  transition: all 1s ease;
+  :hover {
+    filter: grayscale(100%);
+  }
+}
