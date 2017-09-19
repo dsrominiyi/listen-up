@@ -1,11 +1,16 @@
 @import 'audio-player.scss';
 @import 'effects.scss';
 
+$lilac: #CEAFFF;
+$white: #F7F1FF;
+$dark-grey: #636363;
+$border-outer: 1px solid $dark-grey;
+$border-inner: 2px solid $dark-grey;
+
 html {
-  font-family: Roboto,sans-serif;
-  background-image: radial-gradient(circle at center,#9C7FE0 0,#F7F1FF 100%);
+  font-family: 'Karla', sans-serif;
+  background-image: radial-gradient(circle at center,$lilac 0,$white 100%);
   height: 100%;
-  background-repeat: no-repeat;
 }
 
 .main-container {
@@ -16,16 +21,76 @@ html {
 }
 
 .choice-grid {
-  .tile {
+  width: 700px;
+  cursor: pointer;
+  .grid-tile {
+    @extend .gradient-black;
+    @extend .box-shadow;
+    border: $border-outer;
+    display: inline-block;
     border-radius: 3px;
-    cursor: pointer;
+    width: 346px;
+    height: 300px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    .tile-img {
+      position: relative;
+      display: block;
+      margin: auto;
+      top: 10px;
+      width: 330px;
+      height: 240px;
+      border-radius: 3px;
+      border: $border-inner;
+      object-fit: cover;
+      box-shadow: inset 3px 3px 10px 0px rgba(50, 50, 50, 0.75);
+    }
+    .tile-text {
+      position: relative;
+      bottom: -20px;
+      margin: auto;
+      width: 200px;
+      text-align: center;
+      color: $white
+    }
   }
 }
 
 .audio_player {
+  @extend .gradient-black;
+  @extend .box-shadow;
+  width: 698px;
   border-radius: 3px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
+  border: $border-outer;
   .audio_info {
     text-align: center;
+    color: $white;
+  }
+  .audio_time_progress {
+    color: $white;
+  }
+  .audio_controls {
+    padding: 0px 10px;
+    margin: 0px !important;
+    box-shadow: 6px 5px 19px -3px rgba(0, 0, 0, 0.56);
+    z-index: 2;
+  }
+  .audio_info_marquee {
+    z-index: 1;
+  }
+  .play_pause_button {
+    background: #333;
+    border-left: 2px solid $dark-grey;
+    border-right: 2px solid $dark-grey;
+    .play_pause_inner{
+      .left, .right {
+        background-color: $white;
+      }
+    }
   }
 }
+
+
+
+

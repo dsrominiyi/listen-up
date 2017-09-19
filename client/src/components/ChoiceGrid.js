@@ -1,29 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { GridList, GridTile } from 'material-ui/GridList';
+import GridTile from './GridTile';
 
-const ChoiceGrid = ({ choices, onChoiceMade }) => {
-
-  return (
-    <div className="choice-grid">
-      <GridList cellHeight={200}>
-        {
-          choices.map(choice => (
-            <GridTile
-              className="tile hover-bw"
-              key={choice.id}
-              title={choice.text}
-              titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
-              onClick={() => onChoiceMade(choice.id)}
-            >
-              <img className="tile-img" src={choice.img} />
-            </GridTile>
-          ))
-        }
-      </GridList>
-    </div>
-  );
+const renderTiles = ({ choices, onChoiceMade }) => {
+  const tiles = [];
+  let style;
+  let marginRight = true;
+  for (const choice of choices) {
+    style = marginRight ? { marginRight: '2px' } : { marginLeft: '2px' };
+    marginRight = !marginRight;
+    tiles.push(
+      <GridTile
+        className="grid-tile"
+        key={choice.id}
+        text={choice.text}
+        img={choice.img}
+        style={style}
+        onClick={() => onChoiceMade(choice.id)}
+      />
+    );
+  }
+  return tiles;
 };
+
+const ChoiceGrid = (props) => (
+  <div className="choice-grid">
+    { renderTiles(props) }
+  </div>
+);
 
 ChoiceGrid.propTypes = {
   choices: PropTypes.array.isRequired,
