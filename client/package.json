@@ -35,7 +35,6 @@
     "redux": "^3.7.2",
     "redux-promise-middleware": "^4.4.1",
     "redux-test-utils": "^0.1.2",
-    "redux-thunk": "^2.2.0",
     "sass-loader": "^6.0.6",
     "sinon": "^3.2.1",
     "sinon-chai": "^2.13.0",

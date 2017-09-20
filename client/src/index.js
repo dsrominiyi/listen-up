@@ -6,7 +6,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import promiseMiddleware from 'redux-promise-middleware';
-import thunk from 'redux-thunk';
 
 import './style/index.scss';
 
@@ -22,8 +21,7 @@ const store = createStore(
   multiChoiceReducer(),
   composeEnhancers(
     applyMiddleware(
-      promiseMiddleware(),
-      thunk
+      promiseMiddleware()
     )
   )
 );
