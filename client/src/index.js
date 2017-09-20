@@ -7,7 +7,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import promiseMiddleware from 'redux-promise-middleware';
 
-import './style/index.scss';
+import './style/sass/index.scss';
 
 import MultiChoice from './containers/MultiChoice';
 

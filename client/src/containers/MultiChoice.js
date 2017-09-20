@@ -6,6 +6,8 @@ import AudioPlayer from 'react-responsive-audio-player';
 import ChoiceGrid from '../components/ChoiceGrid';
 import AnswerOverlay from '../components/AnswerOverlay';
 
+import bubblesBackground from '../style/js/bubbles';
+
 import ApiClient from '../services/ApiClient';
 
 import * as multiChoiceActions from '../actions/multiChoiceActions';
@@ -78,7 +80,12 @@ class MultiChoice extends Component {
   }
 
   componentDidMount() {
+    bubblesBackground();
     this.props.getNewQuestion();
+  }
+
+  componentDidUpdate() {
+    bubblesBackground();
   }
 
   render() {
@@ -92,36 +99,37 @@ class MultiChoice extends Component {
 
     return (
       <div className="multi-choice">
+        <div className="content">
+          <canvas className="background-canvas"/>
+          <div className="main-container">
+            <div className="info">
+              <div className="text">{ `PLAYS LEFT: ${playsLeft}` }</div>
+              <div className="text">{ `SCORE: ${score}` }</div>
+            </div>
+            <AudioPlayer
+              className="audio-player"
+              hideBackSkip={true}
+              hideForwardSkip={true}
+              disableSeek={true}
+              cycle={false}
+              onMediaEvent={{ 
+                ended: this.incrementPlays,
+                play: this.canPlay
+              }}
+              playlist={[{ 
+                url: sound.src, 
+                displayText: 'Name the sound!'
+              }]}
+              audioElementRef={ref => this.audioElement = ref}
+            />
 
-        <div className="main-container">
-          <div className="info">
-            <div className="text">{ `PLAYS LEFT: ${playsLeft}` }</div>
-            <div className="text">{ `SCORE: ${score}` }</div>
+            <ChoiceGrid
+              className="choice-grid"
+              choices={choices}
+              onChoiceMade={choiceId => this.checkAnswer(choiceId)}
+            />
           </div>
-          <AudioPlayer
-            className="audio-player"
-            hideBackSkip={true}
-            hideForwardSkip={true}
-            disableSeek={true}
-            cycle={false}
-            onMediaEvent={{ 
-              ended: this.incrementPlays,
-              play: this.canPlay
-            }}
-            playlist={[{ 
-              url: sound.src, 
-              displayText: 'Name the sound!'
-            }]}
-            audioElementRef={ref => this.audioElement = ref}
-          />
-
-          <ChoiceGrid
-            className="choice-grid"
-            choices={choices}
-            onChoiceMade={choiceId => this.checkAnswer(choiceId)}
-          />
         </div>
-
         {
           showOverlay
             ? (
@@ -138,7 +146,6 @@ class MultiChoice extends Component {
             )
             : ''
         }
-
       </div>
     );
   }
