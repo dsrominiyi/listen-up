@@ -11,7 +11,7 @@ const renderTiles = ({ choices, onChoiceMade }) => {
     marginRight = !marginRight;
     tiles.push(
       <GridTile
-        className="grid-tile"
+        className="tile"
         key={choice.id}
         text={choice.text}
         img={choice.img}

@@ -44,13 +44,10 @@ describe('<ChoiceGrid />', () => {
 
     for (let i=0; i<choices.length; i++) {
       const tile = tiles.get(i);
-      const img = tile.props.children;
 
       expect(+tile.key).to.equal(choices[i].id);
-      expect(tile.props.title).to.equal(choices[i].text);
-
-      expect(img.type).to.equal('img');
-      expect(img.props.src).to.equal(choices[i].img);
+      expect(tile.props.text).to.equal(choices[i].text);
+      expect(tile.props.img).to.equal(choices[i].img);
     }
   });
 
