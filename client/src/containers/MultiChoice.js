@@ -61,6 +61,7 @@ class MultiChoice extends Component {
 
   wrongAnswer = () => {
     this.setState({
+      playCount: 0,
       showOverlay: true
     });
     this.props.getNewQuestion();
@@ -69,6 +70,7 @@ class MultiChoice extends Component {
   correctAnswer = (points) => {
     this.setState({
       score: this.state.score + points,
+      playCount: 0,
       isCorrectAnswer: true,
       showOverlay: true
     });

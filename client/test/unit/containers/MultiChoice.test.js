@@ -113,6 +113,13 @@ describe('<MultiChoice />', () => {
     expect(component.state().showOverlay).to.equal(true);
   });
 
+  it('should reset playCount on a correct choice', () => {
+    
+    const correctAnswerId = sound.answerId;
+    component.instance().checkAnswer(correctAnswerId);
+    expect(component.state().playCount).to.equal(0);
+  });
+
   it('should retrieve a new question on a correct choice', () => {
     
     const correctAnswerId = sound.answerId;
@@ -123,12 +130,18 @@ describe('<MultiChoice />', () => {
     expect(api.get).to.have.been.calledWith('/multi/new');
   });
 
-
   it('should set showOverlay to true on an incorrect choice', () => {
     
     const wrongAnswerId = sound.answerId + 1;
     component.instance().checkAnswer(wrongAnswerId);
     expect(component.state().showOverlay).to.equal(true);
+  });
+
+  it('should reset playCount on an incorrect choice', () => {
+    
+    const wrongAnswerId = sound.answerId + 1;
+    component.instance().checkAnswer(wrongAnswerId);
+    expect(component.state().playCount).to.equal(0);
   });
 
   it('should retrieve a new question on an incorrect choice', () => {
