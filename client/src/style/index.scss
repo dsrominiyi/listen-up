@@ -6,6 +6,7 @@ $white: #F7F1FF;
 $dark-grey: #636363;
 $border-outer: 1px solid $dark-grey;
 $border-inner: 2px solid $dark-grey;
+$content-width: 696px;
 
 html {
   font-family: 'Karla', sans-serif;
@@ -13,11 +14,23 @@ html {
   height: 100%;
 }
 
+.text {
+  color: $dark-grey;
+  font-size: 20px;
+  font-weight: 600;
+  display: inline-block;
+  cursor: pointer;
+}
+
 .main-container {
   width: 700px;
   margin-left: auto;
   margin-right: auto;
   padding: 50px 0px 50px;
+  .info {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .choice-grid {
@@ -29,7 +42,7 @@ html {
     border: $border-outer;
     display: inline-block;
     border-radius: 3px;
-    width: 346px;
+    width: 345px;
     height: 300px;
     margin-top: 2px;
     margin-bottom: 2px;
@@ -59,7 +72,7 @@ html {
 .audio_player {
   @extend .gradient-black;
   @extend .box-shadow;
-  width: 698px;
+  width: $content-width;
   border-radius: 3px;
   margin-bottom: 2px;
   border: $border-outer;

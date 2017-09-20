@@ -82,7 +82,7 @@ class MultiChoice extends Component {
   render() {
 
     const { choices, sound, maxPlays } = this.props;
-    const { isCorrectAnswer, showOverlay, playCount } = this.state;
+    const { isCorrectAnswer, showOverlay, playCount, score } = this.state;
 
     const correctChoice = choices.filter(choice => (choice.id === sound.answerId))[0];
 
@@ -92,6 +92,10 @@ class MultiChoice extends Component {
       <div className="multi-choice">
 
         <div className="main-container">
+          <div className="info">
+            <div className="text">{ `PLAYS LEFT: ${playsLeft}` }</div>
+            <div className="text">{ `SCORE: ${score}` }</div>
+          </div>
           <AudioPlayer
             className="audio-player"
             hideBackSkip={true}
@@ -104,7 +108,7 @@ class MultiChoice extends Component {
             }}
             playlist={[{ 
               url: sound.src, 
-              displayText: `Name the sound! (plays left: ${playsLeft})` 
+              displayText: 'Name the sound!'
             }]}
             audioElementRef={ref => this.audioElement = ref}
           />
