@@ -1,0 +1,1 @@
+export const RGB_LILAC = [ 181, 135, 255 ];

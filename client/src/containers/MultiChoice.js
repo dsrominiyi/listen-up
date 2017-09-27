@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import Sound from 'react-sound';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import AudioPlayer from 'react-responsive-audio-player';
 import ChoiceGrid from '../components/ChoiceGrid';
 import AnswerOverlay from '../components/AnswerOverlay';
@@ -13,6 +15,7 @@ import ApiClient from '../services/ApiClient';
 import * as multiChoiceActions from '../actions/multiChoiceActions';
 
 import { BASE_POINTS, BASE_URL } from '../constants/common';
+import { RGB_LILAC } from '../constants/style';
 
 class MultiChoice extends Component {
 
@@ -28,7 +31,8 @@ class MultiChoice extends Component {
     playCount: 0,
     isWrongAnswer: false,
     isCorrectAnswer: false,
-    showOverlay: false
+    showOverlay: false,
+    animateBackground: false
   };
 
   incrementPlays = () => {
@@ -41,9 +45,11 @@ class MultiChoice extends Component {
     const { maxPlays } = this.props;
     const { playCount } = this.state;
     if (maxPlays === playCount) {
-      this.audioElement.pause();
+      this.pausePlayer();
     }
   }
+
+  pausePlayer = () => this.audioPlayer.pause();
 
   checkAnswer = (choiceId) => {
     const { sound } = this.props;
@@ -80,18 +86,23 @@ class MultiChoice extends Component {
   }
 
   componentDidMount() {
-    bubblesBackground();
     this.props.getNewQuestion();
   }
 
   componentDidUpdate() {
-    bubblesBackground();
+    const { choices } = this.props;
+    const { animateBackground } = this.state;
+    if (choices.length > 0 && !animateBackground) {
+      bubblesBackground(RGB_LILAC);
+      this.setState({ animateBackground: true });
+    }
   }
 
   render() {
 
     const { choices, sound, maxPlays } = this.props;
     const { isCorrectAnswer, showOverlay, playCount, score } = this.state;
+    const { PLAYING, STOPPED } = Sound.status;
 
     const correctChoice = choices.filter(choice => (choice.id === sound.answerId))[0];
 
@@ -100,11 +111,11 @@ class MultiChoice extends Component {
     return (
       <div className="multi-choice">
         <div className="content">
-          <canvas className="background-canvas"/>
+          <canvas className="background-canvas" />
           <div className="main-container">
             <div className="info">
-              <div className="text">{ `PLAYS LEFT: ${playsLeft}` }</div>
-              <div className="text">{ `SCORE: ${score}` }</div>
+              <div className="text">{`PLAYS LEFT: ${playsLeft}`}</div>
+              <div className="text">{`SCORE: ${score}`}</div>
             </div>
             <AudioPlayer
               className="audio-player"
@@ -112,15 +123,15 @@ class MultiChoice extends Component {
               hideForwardSkip={true}
               disableSeek={true}
               cycle={false}
-              onMediaEvent={{ 
+              onMediaEvent={{
                 ended: this.incrementPlays,
                 play: this.canPlay
               }}
-              playlist={[{ 
-                url: sound.src, 
+              playlist={[{
+                url: sound.src,
                 displayText: 'Name the sound!'
               }]}
-              audioElementRef={ref => this.audioElement = ref}
+              audioElementRef={ref => this.audioPlayer = ref}
             />
 
             <ChoiceGrid
@@ -130,19 +141,46 @@ class MultiChoice extends Component {
             />
           </div>
         </div>
+
+        <ReactCSSTransitionGroup
+          transitionName="answer-overlay"
+          transitionEnterTimeout={200}
+          transitionLeaveTimeout={200}
+        >
+          {
+            showOverlay
+              ? (
+                <AnswerOverlay
+                  className="answer-overlay"
+                  isCorrect={isCorrectAnswer}
+                  correctChoice={correctChoice}
+                  onContinue={() => this.setState({
+                    playCount: 0,
+                    isCorrectAnswer: false,
+                    showOverlay: false
+                  })}
+                />
+              )
+              : ''
+          }
+        </ReactCSSTransitionGroup>
+
         {
           showOverlay
             ? (
-              <AnswerOverlay
-                className="answer-overlay"
-                isCorrect={isCorrectAnswer}
-                correctChoice={correctChoice}
-                onContinue={() => this.setState({
-                  playCount: 0,
-                  isCorrectAnswer: false,
-                  showOverlay: false
-                })}
-              />
+              <div>
+                <Sound
+                  url="/app/audio/correct.mp3"
+                  playStatus={isCorrectAnswer ? PLAYING : STOPPED}
+                  onPlaying={this.pausePlayer}
+                />
+                <Sound
+                  url="/app/audio/wrong.mp3"
+                  playStatus={isCorrectAnswer ? STOPPED : PLAYING }
+                  onPlaying={this.pausePlayer}
+                  volume={50}
+                />
+              </div>
             )
             : ''
         }

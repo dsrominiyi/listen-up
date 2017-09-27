@@ -19,6 +19,25 @@
     0 1px 5px 0 rgba(0,0,0,0.2);
 }
 
+.linear-wipe {
+  $shine-white: #C4C4C4;
+
+  background: linear-gradient(to right, $shine-white 0%, #000 5%, #000 95%, $shine-white 100%);
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  animation: shine 3s ease infinite;
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+}
+
 /* Buzz Out http://ianlunn.github.io/Hover/ */
 @keyframes hvr-buzz-out {
   10% {
@@ -62,5 +81,32 @@
     animation-duration: 0.75s;
     animation-timing-function: linear;
     animation-iteration-count: 1;
+  }
+}
+
+/* Pulse Grow http://ianlunn.github.io/Hover/ */
+@-webkit-keyframes hvr-pulse-grow {
+  to {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+}
+@keyframes hvr-pulse-grow {
+  to {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+}
+.hvr-pulse-grow {
+  display: inline-block;
+  vertical-align: middle;
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  &:hover, &:focus, &:active, &-active {
+    animation-name: hvr-pulse-grow;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
   }
 }
