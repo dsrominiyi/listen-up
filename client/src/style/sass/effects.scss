@@ -1,15 +1,6 @@
 .gradient-black {
   background-color: #2c2e31;
-  /* IE9, iOS 3.2+ */
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxyYWRpYWxHcmFkaWVudCBpZD0idnNnZyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIGN4PSIwJSIgY3k9IjAlIiByPSIxNDEuNDIxMzU2MjM3MzA5NSUiPjxzdG9wIHN0b3AtY29sb3I9IiM0ZTUyNWMiIHN0b3Atb3BhY2l0eT0iMSIgb2Zmc2V0PSIwIi8+PHN0b3Agc3RvcC1jb2xvcj0iIzFmMWYxZiIgc3RvcC1vcGFjaXR5PSIxIiBvZmZzZXQ9IjAuNjcyIi8+PHN0b3Agc3RvcC1jb2xvcj0iIzE3MTcxNyIgc3RvcC1vcGFjaXR5PSIxIiBvZmZzZXQ9IjAuNzQ2Ii8+PHN0b3Agc3RvcC1jb2xvcj0iIzE3MTcxNyIgc3RvcC1vcGFjaXR5PSIxIiBvZmZzZXQ9IjEiLz48c3RvcCBzdG9wLWNvbG9yPSIjMzgzODM4IiBzdG9wLW9wYWNpdHk9IjEiIG9mZnNldD0iMSIvPjwvcmFkaWFsR3JhZGllbnQ+PHJlY3QgeD0iLTUwIiB5PSItNTAiIHdpZHRoPSIxMDEiIGhlaWdodD0iMTAxIiBmaWxsPSJ1cmwoI3ZzZ2cpIiAvPjwvc3ZnPg==);
-  /* Android 2.3- hack (needed for the actual radial gradient) */
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxyYWRpYWxHcmFkaWVudCBpZD0idnNnZyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIGN4PSIwJSIgY3k9IjAlIiByPSIxNDEuNDIxMzU2MjM3MzA5NSUiPjxzdG9wIHN0b3AtY29sb3I9IiM0ZTUyNWMiIHN0b3Atb3BhY2l0eT0iMSIgb2Zmc2V0PSIwIi8+PHN0b3Agc3RvcC1jb2xvcj0iIzFmMWYxZiIgc3RvcC1vcGFjaXR5PSIxIiBvZmZzZXQ9IjAuNjcyIi8+PHN0b3Agc3RvcC1jb2xvcj0iIzE3MTcxNyIgc3RvcC1vcGFjaXR5PSIxIiBvZmZzZXQ9IjAuNzQ2Ii8+PHN0b3Agc3RvcC1jb2xvcj0iIzE3MTcxNyIgc3RvcC1vcGFjaXR5PSIxIiBvZmZzZXQ9IjEiLz48c3RvcCBzdG9wLWNvbG9yPSIjMzgzODM4IiBzdG9wLW9wYWNpdHk9IjEiIG9mZnNldD0iMSIvPjwvcmFkaWFsR3JhZGllbnQ+PHJlY3QgeD0iLTUwIiB5PSItNTAiIHdpZHRoPSIxMDEiIGhlaWdodD0iMTAxIiBmaWxsPSJ1cmwoI3ZzZ2cpIiAvPjwvc3ZnPg==),
-      -webkit-gradient(radial, left top, 0, left top, 1254,color-stop(0, rgb(78, 82, 92)),color-stop(0.672, rgb(31, 31, 31)),color-stop(0.746, rgb(23, 23, 23)),color-stop(1, rgb(23, 23, 23)),color-stop(1, rgb(56, 56, 56)));
-  /* Android 2.3 */
-  background-image: -webkit-repeating-radial-gradient(left top, ellipse farthest-corner,rgb(78, 82, 92) 0%,rgb(31, 31, 31) 67.2%,rgb(23, 23, 23) 74.6%,rgb(23, 23, 23) 100%,rgb(56, 56, 56) 100%);
-  /* IE10+ */
   background-image: repeating-radial-gradient(ellipse farthest-corner at left top,rgb(78, 82, 92) 0%,rgb(31, 31, 31) 67.2%,rgb(23, 23, 23) 74.6%,rgb(23, 23, 23) 100%,rgb(56, 56, 56) 100%);
-  background-image: -ms-repeating-radial-gradient(left top, ellipse farthest-corner,rgb(78, 82, 92) 0%,rgb(31, 31, 31) 67.2%,rgb(23, 23, 23) 74.6%,rgb(23, 23, 23) 100%,rgb(56, 56, 56) 100%);
 }
 
 .box-shadow {
@@ -39,74 +30,67 @@
 }
 
 /* Buzz Out http://ianlunn.github.io/Hover/ */
-@keyframes hvr-buzz-out {
-  10% {
-    transform: translateX(3px) rotate(2deg);
-  }
-  20% {
-    transform: translateX(-3px) rotate(-2deg);
-  }
-  30% {
-    transform: translateX(3px) rotate(2deg);
-  }
-  40% {
-    transform: translateX(-3px) rotate(-2deg);
-  }
-  50% {
-    transform: translateX(2px) rotate(1deg);
-  }
-  60% {
-    transform: translateX(-2px) rotate(-1deg);
-  }
-  70% {
-    transform: translateX(2px) rotate(1deg);
-  }
-  80% {
-    transform: translateX(-2px) rotate(-1deg);
-  }
-  90% {
-    transform: translateX(1px) rotate(0);
-  }
-  100% {
-    transform: translateX(-1px) rotate(0);
-  }
-}
 .hvr-buzz-out {
   display: inline-block;
   vertical-align: middle;
   transform: perspective(1px) translateZ(0);
   box-shadow: 0 0 1px transparent;
   &:hover, &:focus, &:active {
-    animation-name: hvr-buzz-out;
+    animation-name: buzz-out;
     animation-duration: 0.75s;
     animation-timing-function: linear;
     animation-iteration-count: 1;
   }
+  @keyframes buzz-out {
+    10% {
+      transform: translateX(3px) rotate(2deg);
+    }
+    20% {
+      transform: translateX(-3px) rotate(-2deg);
+    }
+    30% {
+      transform: translateX(3px) rotate(2deg);
+    }
+    40% {
+      transform: translateX(-3px) rotate(-2deg);
+    }
+    50% {
+      transform: translateX(2px) rotate(1deg);
+    }
+    60% {
+      transform: translateX(-2px) rotate(-1deg);
+    }
+    70% {
+      transform: translateX(2px) rotate(1deg);
+    }
+    80% {
+      transform: translateX(-2px) rotate(-1deg);
+    }
+    90% {
+      transform: translateX(1px) rotate(0);
+    }
+    100% {
+      transform: translateX(-1px) rotate(0);
+    }
+  }
 }
 
 /* Pulse Grow http://ianlunn.github.io/Hover/ */
-@-webkit-keyframes hvr-pulse-grow {
-  to {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-  }
-}
-@keyframes hvr-pulse-grow {
-  to {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-  }
-}
 .hvr-pulse-grow {
   display: inline-block;
   vertical-align: middle;
   transform: perspective(1px) translateZ(0);
   box-shadow: 0 0 1px transparent;
   &:hover, &:focus, &:active, &-active {
-    animation-name: hvr-pulse-grow;
+    animation-name: pulse-grow;
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+  }
+  @keyframes pulse-grow {
+    to {
+      transform: scale(1.1);
+    }
   }
 }

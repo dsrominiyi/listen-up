@@ -176,7 +176,7 @@ class MultiChoice extends Component {
                 />
                 <Sound
                   url="/app/audio/wrong.mp3"
-                  playStatus={isCorrectAnswer ? STOPPED : PLAYING }
+                  playStatus={isCorrectAnswer ? STOPPED : PLAYING}
                   onPlaying={this.pausePlayer}
                   volume={50}
                 />
