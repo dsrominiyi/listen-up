@@ -3,7 +3,7 @@
 /server/node_modules
 
 # production
-/client/public/app
+/client/public/app/bundle.js*
 /server/server.js*
 
 # misc
