@@ -5,7 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors",
-    "test": "./node_modules/.bin/mocha test/unit/ --recursive --compilers js:babel-core/register --require test/helpers/chai.js --require babel-polyfill test/unit/*/*.test.js"
+    "test": "./node_modules/.bin/mocha test/unit/ --recursive --compilers js:babel-core/register --require test/helpers/chai.js --require babel-polyfill test/unit/*/*.test.js",
+    "lint": "./node_modules/eslint/bin/eslint.js ./"
   },
   "author": "Damilola Rominiyi",
   "license": "ISC",
