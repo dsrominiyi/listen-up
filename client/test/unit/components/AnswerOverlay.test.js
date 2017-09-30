@@ -34,10 +34,10 @@ describe('<AnswerOverlay />', () => {
 
   it('should display the correct answer message if isCorrect', () => {
 
-    const wrongAnswerMsg = component.find('.wrong-answer-msg');
+    const wrongAnswerMsg = component.find('.msg.wrong');
     expect(wrongAnswerMsg).to.have.length(0);
 
-    const correctAnswerMsg = component.find('.correct-answer-msg');
+    const correctAnswerMsg = component.find('.msg.correct');
     expect(correctAnswerMsg).to.have.length(1);
 
     expect(correctAnswerMsg.props().children).to.contain(correctChoice.text);
@@ -47,10 +47,10 @@ describe('<AnswerOverlay />', () => {
 
     initialise(false);
 
-    const wrongAnswerMsg = component.find('.wrong-answer-msg');
+    const wrongAnswerMsg = component.find('.msg.wrong');
     expect(wrongAnswerMsg).to.have.length(1);
 
-    const correctAnswerMsg = component.find('.correct-answer-msg');
+    const correctAnswerMsg = component.find('.msg.correct');
     expect(correctAnswerMsg).to.have.length(0);
 
     expect(wrongAnswerMsg.props().children).to.contain(correctChoice.text);
@@ -58,7 +58,7 @@ describe('<AnswerOverlay />', () => {
 
   it('should display the picture of the correct img', () => {
 
-    const correctChoiceImg = component.find('.correct-choice-img');
+    const correctChoiceImg = component.find('.answer-img');
     expect(correctChoiceImg.type()).to.equal('img');
     expect(correctChoiceImg.props().src).to.equal(correctChoice.img);
   });

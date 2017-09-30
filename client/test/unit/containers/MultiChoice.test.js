@@ -10,11 +10,15 @@ import * as multiChoiceActions from '../../../src/actions/multiChoiceActions';
 import { BASE_POINTS } from '../../../src/constants/common';
 
 const ApiClient = function() { return { get: sinon.spy() }; };
+const bubblesBackground = sinon.spy();
+
 proxyquire.noCallThru();
+
 const module = proxyquire(
   '../../../src/containers/MultiChoice',
   {
-    '../services/ApiClient': ApiClient
+    '../services/ApiClient': ApiClient,
+    '../style/js/bubbles': bubblesBackground 
   }
 );
 const MultiChoice = module.default;
@@ -66,6 +70,33 @@ describe('<MultiChoice />', () => {
     component.instance().componentDidMount();
     expect(store.isActionDispatched(expectedAction)).to.equal(true);
     expect(api.get).to.have.been.calledWith('/multi/new');
+  });
+
+  it('should not render the background animation if there are no choices', () => {
+    choices = [];
+    initialise();
+
+    component.instance().componentDidUpdate();
+    expect(bubblesBackground).to.not.have.been.called;
+  });
+
+  it('should render the background animation and set animateBackground to true', () => {
+
+    component.instance().componentDidUpdate();
+    expect(bubblesBackground).to.have.been.called;
+    expect(component.state().animateBackground).to.equal(true);
+  });
+
+  it('should not attempt to re-render the background animation if animateBackground is true', () => {
+
+    component.instance().componentDidUpdate();
+    expect(bubblesBackground).to.have.been.called;
+    expect(component.state().animateBackground).to.equal(true);
+
+    bubblesBackground.reset();
+    component.instance().componentDidUpdate();
+    expect(bubblesBackground).to.not.have.been.called;
+    expect(component.state().animateBackground).to.equal(true);
   });
 
   it('should render the audio player', () => {
