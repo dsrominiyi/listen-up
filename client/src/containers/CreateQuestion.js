@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 import * as style from '../style/js/createQuestion';
-import bubblesBackground from '../style/js/bubbles';
+import Bubbles from '../style/js/animation/Bubbles';
 
 import { RGB_GREY } from '../constants/style';
 
 class CreateQuestion extends Component {
 
   state = {
-    questionType: 'multi',
     selectedTab: 1,
     images: [],
     choices: [],
-    answer: null
+    answer: null,
+    backgroundAnimation: new Bubbles(RGB_GREY)
   };
 
   renderTabs = () => [1,2,3,4].map(i => (
@@ -28,7 +28,11 @@ class CreateQuestion extends Component {
   ))
 
   componentDidMount() {
-    bubblesBackground(RGB_GREY);
+    this.state.backgroundAnimation.start();
+  }
+
+  componentWillUnmount() {
+    this.state.backgroundAnimation.stop();
   }
   
   render() {
@@ -51,6 +55,8 @@ class CreateQuestion extends Component {
                   onChange={tab => this.setState({ selectedTab: tab })}
                   children={this.renderTabs()}
                 />
+              </div>
+              <div className="main">
               </div>
               
 

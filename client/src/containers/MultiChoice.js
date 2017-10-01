@@ -8,7 +8,7 @@ import AudioPlayer from 'react-responsive-audio-player';
 import ChoiceGrid from '../components/multiChoice/ChoiceGrid';
 import AnswerOverlay from '../components/multiChoice/AnswerOverlay';
 
-import bubblesBackground from '../style/js/bubbles';
+import Bubbles from '../style/js/animation/Bubbles';
 
 import ApiClient from '../services/ApiClient';
 
@@ -32,7 +32,8 @@ class MultiChoice extends Component {
     isWrongAnswer: false,
     isCorrectAnswer: false,
     showOverlay: false,
-    animateBackground: false
+    animateBackground: false,
+    backgroundAnimation: new Bubbles(RGB_LILAC)
   };
 
   incrementPlays = () => {
@@ -91,11 +92,15 @@ class MultiChoice extends Component {
 
   componentDidUpdate() {
     const { choices } = this.props;
-    const { animateBackground } = this.state;
+    const { animateBackground, backgroundAnimation} = this.state;
     if (choices.length > 0 && !animateBackground) {
-      bubblesBackground(RGB_LILAC);
+      backgroundAnimation.start();
       this.setState({ animateBackground: true });
     }
+  }
+
+  componentWillUnmount() {
+    this.state.backgroundAnimation.stop();
   }
 
   render() {

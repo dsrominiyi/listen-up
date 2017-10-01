@@ -35,6 +35,7 @@
         @extend .box-shadow;
         display: inline-block;
         width: 675px;
+        border-radius: 3px; 
         border-left: $dark-grey 2px solid; 
         border-right: $dark-grey 2px solid; 
       }

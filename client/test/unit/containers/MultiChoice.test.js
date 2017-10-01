@@ -9,8 +9,13 @@ import * as multiChoiceActions from '../../../src/actions/multiChoiceActions';
 
 import { BASE_POINTS } from '../../../src/constants/common';
 
-const ApiClient = function() { return { get: sinon.spy() }; };
-const bubblesBackground = sinon.spy();
+const bubbles = { 
+  start: sinon.spy(),
+  stop: sinon.spy() 
+};
+
+const ApiClient = function() { return { get: () => {} }; };
+const Bubbles = function() { return bubbles; };
 
 proxyquire.noCallThru();
 
@@ -18,7 +23,7 @@ const module = proxyquire(
   '../../../src/containers/MultiChoice',
   {
     '../services/ApiClient': ApiClient,
-    '../style/js/bubbles': bubblesBackground 
+    '../style/js/animation/Bubbles': Bubbles 
   }
 );
 const MultiChoice = module.default;
@@ -60,6 +65,9 @@ describe('<MultiChoice />', () => {
     maxPlays = 3;
     
     api = new ApiClient();
+
+    bubbles.start.reset();
+    bubbles.stop.reset();
     
     initialise();
   });
@@ -69,7 +77,6 @@ describe('<MultiChoice />', () => {
 
     component.instance().componentDidMount();
     expect(store.isActionDispatched(expectedAction)).to.equal(true);
-    expect(api.get).to.have.been.calledWith('/multi/new');
   });
 
   it('should not render the background animation if there are no choices', () => {
@@ -77,25 +84,25 @@ describe('<MultiChoice />', () => {
     initialise();
 
     component.instance().componentDidUpdate();
-    expect(bubblesBackground).to.not.have.been.called;
+    expect(bubbles.start).to.not.have.been.called;
   });
 
   it('should render the background animation and set animateBackground to true', () => {
 
     component.instance().componentDidUpdate();
-    expect(bubblesBackground).to.have.been.called;
+    expect(bubbles.start).to.have.been.called;
     expect(component.state().animateBackground).to.equal(true);
   });
 
   it('should not attempt to re-render the background animation if animateBackground is true', () => {
 
     component.instance().componentDidUpdate();
-    expect(bubblesBackground).to.have.been.called;
+    expect(bubbles.start).to.have.been.called;
     expect(component.state().animateBackground).to.equal(true);
 
-    bubblesBackground.reset();
+    bubbles.start.reset();
     component.instance().componentDidUpdate();
-    expect(bubblesBackground).to.not.have.been.called;
+    expect(bubbles.start).to.not.have.been.called;
     expect(component.state().animateBackground).to.equal(true);
   });
 
@@ -158,7 +165,6 @@ describe('<MultiChoice />', () => {
 
     const expectedAction = multiChoiceActions.getNewQuestion(api);
     expect(store.isActionDispatched(expectedAction)).to.equal(true);
-    expect(api.get).to.have.been.calledWith('/multi/new');
   });
 
   it('should set showOverlay to true on an incorrect choice', () => {
@@ -182,7 +188,6 @@ describe('<MultiChoice />', () => {
 
     const expectedAction = multiChoiceActions.getNewQuestion(api);
     expect(store.isActionDispatched(expectedAction)).to.equal(true);
-    expect(api.get).to.have.been.calledWith('/multi/new');
   });
 
   it('should not render the answer overlay when showOverlay is false', () => {
@@ -217,6 +222,12 @@ describe('<MultiChoice />', () => {
 
     overlay = component.find('.answer-overlay');
     expect(overlay).to.have.length(0);
+  });
+
+  it('should stop the background animation before unmounting', () => {
+
+    component.instance().componentWillUnmount();
+    expect(bubbles.stop).to.have.been.called;
   });
 
 });
