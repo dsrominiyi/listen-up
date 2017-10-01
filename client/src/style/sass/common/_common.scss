@@ -67,6 +67,16 @@ html {
     margin: 0 auto;
     margin-top: 130px;
     border-radius: 3px; 
+    .home-button {
+      width: 50px;
+      position: absolute;
+      .icon {
+        font-size: 26px !important;
+        &.home {
+          color: $grey !important;
+        }
+      }
+    }
     .menu-section {
       width: 70%;
       text-align: center;
@@ -92,13 +102,14 @@ html {
   .background-canvas {
     position: absolute;
     bottom: 0;
-    z-index: 0;
   }
 }
 
 .main-container {
   margin: 0 auto;
   padding: 50px 0px 50px;
+  position: relative;
+  z-index: 1;
 }
 
 

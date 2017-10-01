@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
+import { FlatButton, FontIcon } from 'material-ui';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import AppMenu from './AppMenu';

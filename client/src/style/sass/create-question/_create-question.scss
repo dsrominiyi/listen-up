@@ -11,4 +11,33 @@
   .main-container {
     width: 800px;
   }
+
+  .creation-wizard {
+    @extend .gradient-black;
+    @extend .box-shadow;
+    width: 800px;
+    min-height: 500px;
+    margin: 0 auto;
+    border-radius: 3px; 
+    .top-bar {
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+      color: $grey;
+      .heading {
+        display: inline-block;
+        padding: 12px 5px;
+        width: 112px;
+        vertical-align: top;
+      }
+      .tabs {
+        @extend .box-shadow;
+        display: inline-block;
+        width: 675px;
+        border-left: $dark-grey 2px solid; 
+        border-right: $dark-grey 2px solid; 
+      }
+    }
+  }
 }

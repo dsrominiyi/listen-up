@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import FlatButton from 'material-ui/FlatButton';
+import { FlatButton, FontIcon } from 'material-ui';
 
-import { HEX_GREY, HEX_LILAC } from '../constants/style';
+import { flatButtonLabel } from '../style/js/appMenu';
+import { HEX_LILAC } from '../constants/style';
 
 class AppMenu extends Component {
 
@@ -34,15 +35,16 @@ class AppMenu extends Component {
   render() {
     const { route } = this;
 
-    const labelStyle = {
-      color: HEX_GREY,
-      fontSize: '15px',
-      textTransform: 'none'
-    };
-
     return (
       <div className="app-menu">
         <div className="menu-box" ref={node => this.menuBox = node}>
+          <div className="home-button">
+            <FlatButton
+              fullWidth={true}
+              icon={<FontIcon className={'material-icons icon home'}>home</FontIcon>}
+              onClick={() => route('/')}
+            />
+          </div>
 
           <div className="menu-section game-modes">
             <div className="category">Game Modes</div>
@@ -50,7 +52,7 @@ class AppMenu extends Component {
             <FlatButton
               fullWidth={true}
               label="Multiple Choice"
-              labelStyle={{ ...labelStyle, color: HEX_LILAC }}
+              labelStyle={flatButtonLabel(HEX_LILAC)}
               onClick={() => route('/multi')}
             />
           </div>
@@ -61,7 +63,7 @@ class AppMenu extends Component {
             <FlatButton
               fullWidth={true}
               label="Create Question"
-              labelStyle={labelStyle}
+              labelStyle={flatButtonLabel()}
               onClick={() => route('/create')}
             />
           </div>
