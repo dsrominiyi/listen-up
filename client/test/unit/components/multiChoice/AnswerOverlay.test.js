@@ -1,9 +1,9 @@
 import React from 'react';
-import '../../../node_modules/enzyme/mount';
+import 'enzyme/mount';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import AnswerOverlay from '../../../src/components/AnswerOverlay';
+import AnswerOverlay from '../../../../src/components/multiChoice/AnswerOverlay';
 
 describe('<AnswerOverlay />', () => {
 

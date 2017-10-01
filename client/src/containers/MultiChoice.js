@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import Sound from 'react-sound';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import AudioPlayer from 'react-responsive-audio-player';
-import ChoiceGrid from '../components/ChoiceGrid';
-import AnswerOverlay from '../components/AnswerOverlay';
+import ChoiceGrid from '../components/multiChoice/ChoiceGrid';
+import AnswerOverlay from '../components/multiChoice/AnswerOverlay';
 
 import bubblesBackground from '../style/js/bubbles';
 

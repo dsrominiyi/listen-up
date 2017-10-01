@@ -1,9 +1,9 @@
 import React from 'react';
-import '../../../node_modules/enzyme/mount';
+import 'enzyme/mount';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import ChoiceGrid from '../../../src/components/ChoiceGrid';
+import ChoiceGrid from '../../../../src/components/multiChoice/ChoiceGrid';
 
 describe('<ChoiceGrid />', () => {
 

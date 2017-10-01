@@ -1,0 +1,74 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import FlatButton from 'material-ui/FlatButton';
+
+import { HEX_GREY, HEX_LILAC } from '../constants/style';
+
+class AppMenu extends Component {
+
+  static propTypes = {
+    closeMenu: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired
+  };
+
+  handleClickOutside = event => {
+    if (this.menuBox && !this.menuBox.contains(event.target)) {
+      this.props.closeMenu();
+    }
+  }
+
+  route = route => {
+    this.props.history.push(route);
+    this.props.closeMenu();
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  render() {
+    const { route } = this;
+
+    const labelStyle = {
+      color: HEX_GREY,
+      fontSize: '15px',
+      textTransform: 'none'
+    };
+
+    return (
+      <div className="app-menu">
+        <div className="menu-box" ref={node => this.menuBox = node}>
+
+          <div className="menu-section game-modes">
+            <div className="category">Game Modes</div>
+
+            <FlatButton
+              fullWidth={true}
+              label="Multiple Choice"
+              labelStyle={{ ...labelStyle, color: HEX_LILAC }}
+              onClick={() => route('/multi')}
+            />
+          </div>
+
+          <div className="menu-section tools">
+            <div className="category">Tools</div>
+
+            <FlatButton
+              fullWidth={true}
+              label="Create Question"
+              labelStyle={labelStyle}
+              onClick={() => route('/create')}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default AppMenu;

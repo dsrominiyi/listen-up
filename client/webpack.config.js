@@ -38,6 +38,7 @@ module.exports = {
   devServer: {
     contentBase: __dirname + '/public',
     publicPath: '/app/',
+    historyApiFallback: true,
     compress: true,
     inline: true,
     port: 3000

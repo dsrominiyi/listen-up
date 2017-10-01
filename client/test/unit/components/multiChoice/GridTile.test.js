@@ -1,9 +1,9 @@
 import React from 'react';
-import '../../../node_modules/enzyme/mount';
+import 'enzyme/mount';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import GridTile from '../../../src/components/GridTile';
+import GridTile from '../../../../src/components/multiChoice/GridTile';
 
 describe('<GridTile />', () => {
 

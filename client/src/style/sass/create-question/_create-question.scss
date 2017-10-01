@@ -1,0 +1,14 @@
+@import '../common/effects.scss';
+@import '../common/colours.scss';
+
+.create-question {
+
+  .content {
+    min-width: 801px;
+    background-image: radial-gradient(circle at center, $grey 0, $white 100%);
+  }
+  
+  .main-container {
+    width: 800px;
+  }
+}
