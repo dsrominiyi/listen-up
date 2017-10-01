@@ -48,9 +48,12 @@ class Bubbles {
   }
 
   resize = () => {
+    const oldWidth = this.canvas.width;
     this.canvas.width = this.content.offsetWidth;
     this.canvas.height = this.content.offsetHeight;
-    this.initBubbles();
+    if (this.canvas.width !== oldWidth) {
+      this.initBubbles();
+    }
   }
 
   addListeners = () => {
