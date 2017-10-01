@@ -1,24 +1,25 @@
 class Bubble {
 
-  constructor(canvasWidth, canvasHeight, ctx, rgb) {
+  constructor(canvas, ctx, rgb) {
+    this.canvas = canvas;
     this.ctx = ctx;
     this.rgb = rgb;
     this.pos = {};
-    this.init(canvasWidth, canvasHeight);
+    this.init();
   }
 
-  init = (canvasWidth, canvasHeight) => {
-    this.pos.x = Math.random() * canvasWidth;
-    this.pos.y = canvasHeight + Math.random() * 100;
+  init = () => {
+    this.pos.x = Math.random() * this.canvas.width;
+    this.pos.y = this.canvas.height + Math.random() * 100;
     this.alpha = 0.1 + Math.random() * 0.3;
     this.scale = 0.1 + Math.random() * 0.3;
     this.velocity = Math.random();
   }
 
-  draw = (canvasWidth, canvasHeight) => {
+  draw = () => {
     const [ r, g, b] = this.rgb;
     if (this.alpha <= 0) {
-      this.init(canvasWidth, canvasHeight);
+      this.init();
     }
     this.pos.y -= this.velocity;
     this.alpha -= 0.0005;

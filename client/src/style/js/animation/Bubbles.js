@@ -34,7 +34,7 @@ class Bubbles {
   initBubbles = () => {
     this.bubbles = [];
     for (var x = 0; x < this.canvas.width * 0.5; x++) {
-      const b = new Bubble(this.canvas.width, this.canvas.height, this.ctx, this.rgb);
+      const b = new Bubble(this.canvas, this.ctx, this.rgb);
       this.bubbles.push(b);
     }
   }
@@ -42,7 +42,7 @@ class Bubbles {
   animate = () => {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.bubbles.forEach(bubble => {
-      bubble.draw(this.canvas.width, this.canvas.height);
+      bubble.draw();
     });
     this.requestId = requestAnimationFrame(this.animate);
   }
