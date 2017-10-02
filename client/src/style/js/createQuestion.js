@@ -1,4 +1,9 @@
-import { HEX_WHITE } from '../../constants/style';
+import { 
+  HEX_WHITE, 
+  HEX_GREY, 
+  HEX_DARK_GREY,
+  HEX_GREEN
+} from '../../constants/style';
 
 const gradientBlack = {
   backgroundColor: '#2c2e31',
@@ -10,5 +15,31 @@ export const tabItemContainerStyle = {
 };
 
 export const inkBarStyle = {
-  backgroundColor: HEX_WHITE
+  backgroundColor: HEX_WHITE,
+  color: HEX_WHITE
+};
+
+export const textFieldStyle = {
+  color: HEX_WHITE
+};
+
+export const floatingLabelStyle = {
+  color: HEX_GREY
+};
+
+export const underlineFocusStyle = {
+  borderColor: HEX_WHITE
+};
+
+export const underlineStyle = {
+  borderColor: HEX_DARK_GREY
+};
+
+export const hintStyle = {
+  color: HEX_DARK_GREY
+};
+
+export const labelStyle = {
+  fontSize: '18px',
+  color: HEX_GREEN
 };

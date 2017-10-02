@@ -3,7 +3,7 @@ import 'enzyme/mount';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import ChoiceGrid from '../../../../src/components/multiChoice/ChoiceGrid';
+import ChoiceGrid from '../../../../src/components/ChoiceGrid';
 
 describe('<ChoiceGrid />', () => {
 

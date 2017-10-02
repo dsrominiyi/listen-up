@@ -262,3 +262,44 @@ $audio_player_progress_bg_color: #4a4a4a !default;
     }
   }
 }
+
+
+// override defaults
+@import '../common/colours.scss';
+@import '../common/effects.scss';
+.audio_player {
+  @extend .gradient-black;
+  @extend .box-shadow;
+  width: 696px;
+  border-radius: 3px;
+  margin-bottom: 2px;
+  border: $border-outer;
+  .audio_info {
+    text-align: center;
+    color: $lilac-white;
+    display: block;
+    animation: unset;
+  }
+  .audio_time_progress {
+    color: $lilac-white;
+  }
+  .audio_controls {
+    padding: 0px 10px;
+    margin: 0px !important;
+    box-shadow: 6px 5px 19px -3px rgba(0, 0, 0, 0.56);
+    z-index: 2;
+  }
+  .audio_info_marquee {
+    z-index: 1;
+  }
+  .play_pause_button {
+    background: #333;
+    border-left: 2px solid $dark-grey;
+    border-right: 2px solid $dark-grey;
+    .play_pause_inner{
+      .left, .right {
+        background-color: $lilac-white;
+      }
+    }
+  }
+}

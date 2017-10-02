@@ -3,7 +3,7 @@ import 'enzyme/mount';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import AnswerOverlay from '../../../../src/components/multiChoice/AnswerOverlay';
+import AnswerOverlay from '../../../../src/components/AnswerOverlay';
 
 describe('<AnswerOverlay />', () => {
 

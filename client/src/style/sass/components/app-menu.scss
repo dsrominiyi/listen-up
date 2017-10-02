@@ -1,0 +1,60 @@
+@import '../common/colours.scss';
+@import '../common/effects.scss';
+
+.app-menu {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  background: radial-gradient(circle at 50% 280px, $darker-grey 0%, $darker-grey 5%, $grey-transparent 100%);
+  &-enter {
+    opacity: 0.01;
+  }
+  &-enter-active {
+    opacity: 1;
+    transition: opacity 200ms ease-in;
+  }
+  &-leave {
+    opacity: 1;
+  }
+  &-leave-active {
+    opacity: 0.01;
+    transition: opacity 200ms ease-in;
+  }
+  .menu-box {
+    @extend .gradient-black;
+    @extend .box-shadow;
+    cursor: default;
+    width: 500px;
+    min-height: 300px;
+    margin: 0 auto;
+    margin-top: 130px;
+    border-radius: 3px; 
+    .home-button {
+      width: 50px;
+      position: absolute;
+      .icon {
+        font-size: 26px !important;
+        &.home {
+          color: $grey !important;
+        }
+      }
+    }
+    .menu-section {
+      width: 70%;
+      text-align: center;
+      margin: 0 auto;
+      padding-top: 50px;
+      .category {
+        color: $grey;
+        font-size: 22px;
+        text-transform: uppercase;
+        border-bottom: $darker-grey solid 2px;
+        margin-bottom: 10px
+      }
+    }
+  }
+}
