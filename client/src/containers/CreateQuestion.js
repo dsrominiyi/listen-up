@@ -177,7 +177,7 @@ class CreateQuestion extends Component {
                         checked={this.state.answerIndex === this.state.selectedTab - 1}
                         onChange={e => this.setAnswer(e.target.checked)}
                       />
-                      Is correct answer?
+                      Is correct answer
                     </div>
                   </div>
 
