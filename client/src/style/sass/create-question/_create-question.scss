@@ -54,7 +54,10 @@
         width: 550px;
         border-radius: 3px; 
         border-left: $dark-grey 2px solid; 
-        border-right: $dark-grey 2px solid; 
+        border-right: $dark-grey 2px solid;
+        .error {
+          color: $red !important;
+        } 
       }
       .player-div {
         display: inline-block;

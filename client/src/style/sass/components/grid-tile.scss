@@ -29,6 +29,8 @@
     margin: auto;
     width: 200px;
     text-align: center;
-    color: $lilac-white
+    color: $lilac-white;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

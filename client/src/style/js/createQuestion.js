@@ -2,7 +2,8 @@ import {
   HEX_WHITE, 
   HEX_GREY, 
   HEX_DARK_GREY,
-  HEX_GREEN
+  HEX_GREEN,
+  HEX_RED
 } from '../../constants/style';
 
 const gradientBlack = {
@@ -39,7 +40,9 @@ export const hintStyle = {
   color: HEX_DARK_GREY
 };
 
-export const labelStyle = {
+export const labelStyle = (disabled, showErrors) => ({
   fontSize: '18px',
-  color: HEX_GREEN
-};
+  color: disabled 
+    ? (showErrors ? HEX_RED : HEX_DARK_GREY) 
+    : HEX_GREEN
+});

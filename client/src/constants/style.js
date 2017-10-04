@@ -6,3 +6,4 @@ export const HEX_GREY = '#969696';
 export const HEX_DARK_GREY = '#636363';
 export const HEX_LILAC = '#CEAFFF';
 export const HEX_GREEN = '#7CF023';
+export const HEX_RED = '#F03B23';

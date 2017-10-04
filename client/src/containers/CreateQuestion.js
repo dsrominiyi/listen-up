@@ -6,10 +6,25 @@ import { TextField, FlatButton } from 'material-ui';
 import GridTile from '../components/GridTile';
 import AudioPlayer from 'react-responsive-audio-player';
 
-import * as style from '../style/js/createQuestion';
+import { validate, ruleRunner } from '../validation/validate';
+import { required, notNull, assetUrl } from '../validation/rules';
+
+import * as Style from '../style/js/createQuestion';
 import Bubbles from '../style/js/animation/Bubbles';
 
 import { RGB_GREY } from '../constants/style';
+
+const choiceValidations = [
+  ruleRunner('img', assetUrl),
+  ruleRunner('text', required),
+  ruleRunner('img', required)
+];
+
+const otherValidations = [
+  ruleRunner('soundSrc', assetUrl),
+  ruleRunner('soundSrc', required),
+  ruleRunner('answerIndex', notNull)
+];
 
 class CreateQuestion extends Component {
 
@@ -18,26 +33,78 @@ class CreateQuestion extends Component {
     text: '',
     img: '',
     soundSrc: '',
-    choices: [{}, {}, {}, {}],
+    choices: [{},{},{},{}].map(() => ({ text: '', img: '' })),
     answerIndex: null,
+    formValid: false,
+    showErrors: false,
+    validationErrors: { choicesArray: [], other: {} },
     backgroundAnimation: new Bubbles(RGB_GREY)
   };
 
-  updateChoice = (value, prop) => {
+  updateChoice = (value, field) => {
     const { selectedTab, choices } = this.state;
 
-    choices[selectedTab - 1][prop] = value;
-    this.setState({ [prop]: value, choices });
+    if (field === 'text') {
+      // remove non-alphanumeric chars
+      value = value.replace(/[^a-zA-Z\d\s:]/g, '');
+    }
+
+    choices[selectedTab - 1][field] = value;
+    this.onFormUpdated({ [field]: value, choices });
   }
 
-  initChoices = () => {
-    const { choices } = this.state;
-    for (const choice of this.state.choices) {
-      choice.text = '';
-      choice.img = '';
+  setAnswer = isAnswer => {
+    const { selectedTab, answerIndex } = this.state;
+    if (isAnswer) {
+      this.onFormUpdated({ answerIndex: selectedTab - 1 });
+    } else if (answerIndex === selectedTab - 1) {
+      this.onFormUpdated({ answerIndex: null });
     }
-    this.setState({ choices });
   }
+
+  hasErrors = (errors) => Object.keys(errors).length > 0
+
+  onFormUpdated = newValues => {
+    let newState = {
+      ...this.state,
+      ...newValues
+    };
+
+    let formValid = true;
+    const validationErrors = {
+      choicesArray: validate(newState.choices, choiceValidations),
+      other: validate(newState, otherValidations)
+    };
+
+    const hasInvalidChoice = () => validationErrors.choicesArray
+      .some(choiceErrors => this.hasErrors(choiceErrors));
+    const hasInvalidOther = () => this.hasErrors(validationErrors.other);
+
+    formValid = !hasInvalidChoice() && !hasInvalidOther();
+
+    newState = {
+      ...newState,
+      validationErrors,
+      formValid
+    };
+
+    this.setState(newState);
+  }
+
+  errorFor = (field) => {
+    const { showErrors, selectedTab, validationErrors } = this.state;
+
+    if (!showErrors) {
+      return '';
+    }
+
+    if (field === 'text' || field === 'img') {
+      const choiceErrors = validationErrors.choicesArray[selectedTab-1];
+      return choiceErrors[field];
+    }
+
+    return validationErrors.other[field];
+  } 
 
   onTabChange = tab => {
     const { choices } = this.state;
@@ -49,35 +116,37 @@ class CreateQuestion extends Component {
     });
   }
 
-  setAnswer = isAnswer => {
-    const { selectedTab, answerIndex } = this.state;
-    if (isAnswer) {
-      this.setState({ answerIndex: selectedTab - 1 });
-    } else if (answerIndex === selectedTab - 1) {
-      this.setState({ answerIndex: null });
-    }
-  }
-
-  renderTabs = () => [1, 2, 3, 4].map(i => (
-    <Tab
-      key={i}
-      className="tab"
-      label={i}
-      value={i}
-    />
-  ))
+  renderTabs = () => [1, 2, 3, 4].map(i => {
+    const { showErrors, validationErrors } = this.state;
+    const choiceErrors = validationErrors.choicesArray[i-1];
+    const errors = showErrors && this.hasErrors(choiceErrors);
+    
+    return (
+      <Tab
+        key={i}
+        className={`tab ${ errors ? 'error' : '' }`}
+        label={i}
+        value={i}
+      />
+    );
+  })
 
   componentDidMount() {
-    this.initChoices();
     this.state.backgroundAnimation.start();
+
+    this.setState({ 
+      validationErrors: {
+        choicesArray: validate(this.state.choices, choiceValidations),
+        other: validate(this.state, otherValidations)
+      } 
+    });
   }
 
   componentWillUnmount() {
     this.state.backgroundAnimation.stop();
   }
 
-  render() {
-
+  render() {    
     return (
       <div className="create-question">
         <div className="content">
@@ -110,16 +179,18 @@ class CreateQuestion extends Component {
                   <div className="panel left">
                     <div className="input">
                       <TextField
+                        id="soundSrc"
                         className="text-field"
                         value={this.state.soundSrc}
-                        onChange={e => this.setState({ soundSrc: e.target.value })}
+                        onChange={e => this.onFormUpdated({ soundSrc: e.target.value })}
                         hintText="http://audio.com/sound.mp3"
                         floatingLabelText="Sound URL"
-                        inputStyle={style.textFieldStyle}
-                        floatingLabelStyle={style.floatingLabelStyle}
-                        underlineFocusStyle={style.underlineFocusStyle}
-                        underlineStyle={style.underlineStyle}
-                        hintStyle={style.hintStyle}
+                        errorText={this.errorFor('soundSrc')}
+                        inputStyle={Style.textFieldStyle}
+                        floatingLabelStyle={Style.floatingLabelStyle}
+                        underlineFocusStyle={Style.underlineFocusStyle}
+                        underlineStyle={Style.underlineStyle}
+                        hintStyle={Style.hintStyle}
                       />
                     </div>
                   </div>
@@ -134,8 +205,8 @@ class CreateQuestion extends Component {
                     value={this.state.selectedTab}
                     onChange={this.onTabChange}
                     children={this.renderTabs()}
-                    tabItemContainerStyle={style.tabItemContainerStyle}
-                    inkBarStyle={style.inkBarStyle}
+                    tabItemContainerStyle={Style.tabItemContainerStyle}
+                    inkBarStyle={Style.inkBarStyle}
                   />
                 </div>
 
@@ -143,31 +214,35 @@ class CreateQuestion extends Component {
                   <div className="panel left">
                     <div className="input">
                       <TextField
+                        id="text"
                         className="text-field"
                         value={this.state.text}
                         onChange={e => this.updateChoice(e.target.value, 'text')}
                         hintText="A dog barking"
                         floatingLabelText="Choice Text"
-                        inputStyle={style.textFieldStyle}
-                        floatingLabelStyle={style.floatingLabelStyle}
-                        underlineFocusStyle={style.underlineFocusStyle}
-                        underlineStyle={style.underlineStyle}
-                        hintStyle={style.hintStyle}
+                        errorText={this.errorFor('text')}
+                        inputStyle={Style.textFieldStyle}
+                        floatingLabelStyle={Style.floatingLabelStyle}
+                        underlineFocusStyle={Style.underlineFocusStyle}
+                        underlineStyle={Style.underlineStyle}
+                        hintStyle={Style.hintStyle}
                       />
                     </div>
 
                     <div className="input">
                       <TextField
+                        id="img"
                         className="text-field"
                         value={this.state.img}
                         onChange={e => this.updateChoice(e.target.value, 'img')}
                         hintText="http://images.com/dog.jpg"
                         floatingLabelText="Choice Image URL"
-                        inputStyle={style.textFieldStyle}
-                        floatingLabelStyle={style.floatingLabelStyle}
-                        underlineFocusStyle={style.underlineFocusStyle}
-                        underlineStyle={style.underlineStyle}
-                        hintStyle={style.hintStyle}
+                        errorText={this.errorFor('img')}
+                        inputStyle={Style.textFieldStyle}
+                        floatingLabelStyle={Style.floatingLabelStyle}
+                        underlineFocusStyle={Style.underlineFocusStyle}
+                        underlineStyle={Style.underlineStyle}
+                        hintStyle={Style.hintStyle}
                       />
                     </div>
 
@@ -199,8 +274,8 @@ class CreateQuestion extends Component {
                   <FlatButton
                     fullWidth={true}
                     label="Save"
-                    labelStyle={style.labelStyle}
-                    onClick={() => {}}
+                    labelStyle={Style.labelStyle(!this.state.formValid, this.state.showErrors)}
+                    onClick={() => this.setState({ showErrors: true })}
                   />
                 </div>
               </div>
