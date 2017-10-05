@@ -26,7 +26,7 @@
   }
   .menu-box {
     @extend .gradient-black;
-    @extend .box-shadow;
+    box-shadow: $box-shadow;
     cursor: default;
     width: 500px;
     min-height: 300px;

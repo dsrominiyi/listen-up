@@ -3,7 +3,7 @@
 
 .grid-tile {
   @extend .gradient-black;
-  @extend .box-shadow;
+  box-shadow: $box-shadow;
   cursor: pointer;
   border: $border-outer;
   display: inline-block;

@@ -269,7 +269,7 @@ $audio_player_progress_bg_color: #4a4a4a !default;
 @import '../common/effects.scss';
 .audio_player {
   @extend .gradient-black;
-  @extend .box-shadow;
+  box-shadow: $box-shadow;
   width: 696px;
   border-radius: 3px;
   margin-bottom: 2px;

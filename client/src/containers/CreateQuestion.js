@@ -7,7 +7,7 @@ import GridTile from '../components/GridTile';
 import AudioPlayer from 'react-responsive-audio-player';
 
 import { validate, ruleRunner } from '../validation/validate';
-import { required, notNull, assetUrl } from '../validation/rules';
+import { required, assetUrl, answerIndex } from '../validation/rules';
 
 import * as Style from '../style/js/createQuestion';
 import Bubbles from '../style/js/animation/Bubbles';
@@ -23,7 +23,7 @@ const choiceValidations = [
 const otherValidations = [
   ruleRunner('soundSrc', assetUrl),
   ruleRunner('soundSrc', required),
-  ruleRunner('answerIndex', notNull)
+  ruleRunner('answerIndex', answerIndex)
 ];
 
 class CreateQuestion extends Component {
@@ -146,7 +146,9 @@ class CreateQuestion extends Component {
     this.state.backgroundAnimation.stop();
   }
 
-  render() {    
+  render() {   
+    const selectAnswerError = this.errorFor('answerIndex'); 
+
     return (
       <div className="create-question">
         <div className="content">
@@ -198,6 +200,11 @@ class CreateQuestion extends Component {
               </div>
 
               <div className="section">
+                {
+                  selectAnswerError
+                    ? <span className="error">{selectAnswerError}</span>
+                    : ''
+                }
                 <div className="top-bar">
                   <div className="heading">Choices</div>
                   <Tabs
@@ -262,7 +269,7 @@ class CreateQuestion extends Component {
                         className="tile"
                         text={this.state.text}
                         img={this.state.img || '/app/images/placeholder.jpg'}
-                        onClick={() => { }}
+                        onClick={() => {}}
                       />
                     </div>
                   </div>

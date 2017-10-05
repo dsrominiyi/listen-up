@@ -15,7 +15,7 @@
 
 .creation-wizard {
   @extend .gradient-black;
-  @extend .box-shadow;
+  box-shadow: $box-shadow;
   color: $grey;
   width: 700px;
   min-height: 500px;
@@ -49,7 +49,7 @@
         vertical-align: top;
       }
       .tabs {
-        @extend .box-shadow;
+        box-shadow: $box-shadow;
         display: inline-block;
         width: 550px;
         border-radius: 3px; 
@@ -94,5 +94,18 @@
   input[type="checkbox"] {
     vertical-align: text-bottom;
     margin-top: 30px;
+  }
+
+  span {
+    &.error {
+      position: absolute;
+      color: $red;
+      text-align: center;
+      width: 100%;
+      background-color: $black-transparent;
+      font-size: 18px;
+      box-shadow: $box-shadow-down;
+      cursor: default; 
+    }
   }
 }
