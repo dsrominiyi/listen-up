@@ -105,7 +105,8 @@
       background-color: $black-transparent;
       font-size: 18px;
       box-shadow: $box-shadow-down;
-      cursor: default; 
+      cursor: default;
+      z-index: 10; 
     }
   }
 }

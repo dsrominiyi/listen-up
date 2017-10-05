@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { PropTypes } from 'prop-types';
 
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { TextField, FlatButton } from 'material-ui';
@@ -12,6 +13,11 @@ import { required, assetUrl, answerIndex } from '../validation/rules';
 import * as Style from '../style/js/createQuestion';
 import Bubbles from '../style/js/animation/Bubbles';
 
+import ApiClient from '../services/ApiClient';
+
+import * as multiChoiceActions from '../actions/multiChoiceActions';
+
+import { BASE_URL } from '../constants/common';
 import { RGB_GREY } from '../constants/style';
 
 const choiceValidations = [
@@ -27,6 +33,11 @@ const otherValidations = [
 ];
 
 class CreateQuestion extends Component {
+
+  static propTypes = {
+    createQuestion: PropTypes.func.isRequired,
+    isSaving: PropTypes.bool
+  }
 
   state = {
     selectedTab: 1,
@@ -70,7 +81,6 @@ class CreateQuestion extends Component {
       ...newValues
     };
 
-    let formValid = true;
     const validationErrors = {
       choicesArray: validate(newState.choices, choiceValidations),
       other: validate(newState, otherValidations)
@@ -80,7 +90,7 @@ class CreateQuestion extends Component {
       .some(choiceErrors => this.hasErrors(choiceErrors));
     const hasInvalidOther = () => this.hasErrors(validationErrors.other);
 
-    formValid = !hasInvalidChoice() && !hasInvalidOther();
+    const formValid = !hasInvalidChoice() && !hasInvalidOther();
 
     newState = {
       ...newState,
@@ -89,6 +99,26 @@ class CreateQuestion extends Component {
     };
 
     this.setState(newState);
+  }
+
+  onSubmit = () => {
+    const { formValid, showErrors } = this.state;
+
+    if (!formValid && !showErrors) {
+      this.setState({ showErrors: true });
+    }
+
+    if (formValid) {
+      const { choices, soundSrc, answerIndex } = this.state;
+
+      const newQuestion = {
+        choices,
+        soundSrc,
+        answerIndex
+      };
+
+      this.props.createQuestion(newQuestion);
+    }
   }
 
   errorFor = (field) => {
@@ -282,7 +312,7 @@ class CreateQuestion extends Component {
                     fullWidth={true}
                     label="Save"
                     labelStyle={Style.labelStyle(!this.state.formValid, this.state.showErrors)}
-                    onClick={() => this.setState({ showErrors: true })}
+                    onClick={this.onSubmit}
                   />
                 </div>
               </div>
@@ -294,4 +324,12 @@ class CreateQuestion extends Component {
   }
 }
 
-export default connect(null, null)(CreateQuestion);
+const api = new ApiClient(BASE_URL);
+
+const mapDispatchToProps = dispatch => {
+  return {
+    createQuestion: newQuestion => dispatch(multiChoiceActions.createQuestion(api, newQuestion))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CreateQuestion);

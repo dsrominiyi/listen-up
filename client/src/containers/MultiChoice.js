@@ -196,11 +196,11 @@ class MultiChoice extends Component {
 
 const api = new ApiClient(BASE_URL);
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ multiChoice }) => {
   return {
-    choices: state.choices,
-    sound: state.sound,
-    maxPlays: state.maxPlays
+    choices: multiChoice.choices,
+    sound: multiChoice.sound,
+    maxPlays: multiChoice.maxPlays
   };
 };
 

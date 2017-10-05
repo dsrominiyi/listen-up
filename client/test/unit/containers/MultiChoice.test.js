@@ -39,9 +39,11 @@ describe('<MultiChoice />', () => {
 
   const initialise = () => {
     const state = {
-      choices,
-      sound,
-      maxPlays
+      multiChoice: {
+        choices,
+        sound,
+        maxPlays
+      }
     };
 
     store = createMockStore(state);

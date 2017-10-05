@@ -11,7 +11,7 @@ import AppBar from './components/AppBar';
 import MultiChoice from './containers/MultiChoice';
 import CreateQuestion from './containers/CreateQuestion';
 
-import multiChoiceReducer from './reducers/multiChoiceReducer';
+import rootReducer from './reducers/_reducers';
 
 import './style/sass/index.scss';
 
@@ -20,7 +20,7 @@ injectTapEventPlugin(); // Needed for onTouchTap
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-  multiChoiceReducer(),
+  rootReducer,
   composeEnhancers(
     applyMiddleware(
       promiseMiddleware()

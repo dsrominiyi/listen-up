@@ -51,4 +51,15 @@ export default class MongoDb {
       throw err;
     }
   }
+
+  async createMulti(newQuestion) {
+    try {
+      // const db = await this.getConnection('multi_choice');
+      
+
+    } catch (error) {
+      console.error('Error!');
+      return { error };
+    }
+  }
 }
