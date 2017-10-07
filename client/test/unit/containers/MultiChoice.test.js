@@ -159,16 +159,7 @@ describe('<MultiChoice />', () => {
     component.instance().checkAnswer(correctAnswerId);
     expect(component.state().playCount).to.equal(0);
   });
-
-  it('should retrieve a new question on a correct choice', () => {
-    
-    const correctAnswerId = sound.answerId;
-    component.instance().checkAnswer(correctAnswerId);
-
-    const expectedAction = multiChoiceActions.getNewQuestion(api);
-    expect(store.isActionDispatched(expectedAction)).to.equal(true);
-  });
-
+  
   it('should set showOverlay to true on an incorrect choice', () => {
     
     const wrongAnswerId = sound.answerId + 1;
@@ -181,15 +172,6 @@ describe('<MultiChoice />', () => {
     const wrongAnswerId = sound.answerId + 1;
     component.instance().checkAnswer(wrongAnswerId);
     expect(component.state().playCount).to.equal(0);
-  });
-
-  it('should retrieve a new question on an incorrect choice', () => {
-    
-    const wrongAnswerId = sound.answerId + 1;
-    component.instance().checkAnswer(wrongAnswerId);
-
-    const expectedAction = multiChoiceActions.getNewQuestion(api);
-    expect(store.isActionDispatched(expectedAction)).to.equal(true);
   });
 
   it('should not render the answer overlay when showOverlay is false', () => {
@@ -224,6 +206,18 @@ describe('<MultiChoice />', () => {
 
     overlay = component.find('.answer-overlay');
     expect(overlay).to.have.length(0);
+  });
+
+  it('should retrieve a new question when onContinue is called', () => {
+    
+    const correctAnswerId = sound.answerId;
+    component.instance().checkAnswer(correctAnswerId);
+    
+    const overlay = component.find('.answer-overlay');
+    overlay.props().onContinue();
+
+    const expectedAction = multiChoiceActions.getNewQuestion(api);
+    expect(store.isActionDispatched(expectedAction)).to.equal(true);
   });
 
   it('should stop the background animation before unmounting', () => {

@@ -13,7 +13,7 @@ const AnswerOverlay = ({ isCorrect, correctChoice, onContinue }) => {
     >
       <span className={`msg ${isCorrect ? 'correct' : 'wrong'} answer`}>
         {isCorrect ? 'Correct!' : ' Wrong!'}<br />
-        The answer is {correctChoice.text.toLowerCase()}
+        The answer is {correctChoice.text}
       </span>
 
       <div className="img-div">

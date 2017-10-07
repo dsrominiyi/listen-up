@@ -1,5 +1,7 @@
 import express from 'express';
 import di from 'serenitydi';
+import cors from 'cors';
+import bodyParser  from 'body-parser';
 
 import register from './register';
 import routes from './routes';
@@ -13,10 +15,10 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', clientUrl);
-  next();
-});
+app.use(cors({ origin: clientUrl }));
+app.use(bodyParser.json());
+
+app.options('*', cors());
 
 register(di);
 routes(app, di);

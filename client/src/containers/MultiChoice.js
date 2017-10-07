@@ -73,7 +73,6 @@ class MultiChoice extends Component {
       playCount: 0,
       showOverlay: true
     });
-    this.props.getNewQuestion();
   }
 
   correctAnswer = (points) => {
@@ -82,6 +81,14 @@ class MultiChoice extends Component {
       playCount: 0,
       isCorrectAnswer: true,
       showOverlay: true
+    });
+  }
+
+  nextQuestion = () => {
+    this.setState({
+      playCount: 0,
+      isCorrectAnswer: false,
+      showOverlay: false
     });
     this.props.getNewQuestion();
   }
@@ -159,11 +166,7 @@ class MultiChoice extends Component {
                   className="answer-overlay"
                   isCorrect={isCorrectAnswer}
                   correctChoice={correctChoice}
-                  onContinue={() => this.setState({
-                    playCount: 0,
-                    isCorrectAnswer: false,
-                    showOverlay: false
-                  })}
+                  onContinue={this.nextQuestion}
                 />
               )
               : ''

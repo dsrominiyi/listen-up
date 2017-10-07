@@ -28,7 +28,7 @@ export default class MongoDb {
 
       // Get random question
       const question = await db.collection('questions')
-        .aggregate({ $sample: { size: 1 } }).next();
+        .aggregate({ $sample: { size: 1 } }, { cursor: { batchSize: 1 } }).next();
       const choices = await db.collection('choices')
         .find({ _id: { $in : question.choiceIds} }).toArray();
       const sound = await db.collection('sounds')
@@ -54,12 +54,29 @@ export default class MongoDb {
 
   async createMulti(newQuestion) {
     try {
-      // const db = await this.getConnection('multi_choice');
-      
+      const db = await this.getConnection('multi_choice');
 
-    } catch (error) {
+      const { choices, soundSrc, answerIndex } = newQuestion;
+      
+      let result = await db.collection('choices').insertMany(choices);
+      const choiceIds = result.insertedIds;
+
+      const answerId = choiceIds[answerIndex];
+      const sound = { src: soundSrc, answerId };
+
+      result = await db.collection('sounds').insertOne(sound);
+      const soundId = result.insertedId;
+      const question = { choiceIds, soundId };
+
+      result = await db.collection('questions').insertOne(question);
+
+      return {
+        success: true,
+        questionId: result.insertedId
+      };
+    } catch (err) {
       console.error('Error!');
-      return { error };
+      throw err;
     }
   }
 }
