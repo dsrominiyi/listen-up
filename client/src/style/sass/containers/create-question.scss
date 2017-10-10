@@ -1,0 +1,109 @@
+.create-question {
+
+  .content {
+    min-width: 701px;
+    background-image: radial-gradient(circle at center, $grey 0, $white 100%);
+  }
+  
+  .main-container {
+    width: 700px;
+  }
+}
+
+.creation-wizard {
+  @extend .gradient-black;
+  box-shadow: $box-shadow;
+  color: $grey;
+  width: 700px;
+  min-height: 500px;
+  margin: 0 auto;
+  border-radius: $border-radius;
+
+  .header {
+    padding: 20px 30px;
+    border-bottom: $dark-grey solid 3px;
+    font-size: 24px;
+    text-align: center
+  }
+
+  .footer {
+    padding: 20px 30px;
+  }
+
+  .section {
+    padding-bottom: 20px;
+    border-bottom: $dark-grey solid 3px;
+    .top-bar {
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+      color: $grey;
+      .heading {
+        display: inline-block;
+        padding: 12px 0;
+        width: 80px;
+        vertical-align: top;
+      }
+      .tabs {
+        box-shadow: $box-shadow;
+        display: inline-block;
+        width: 550px;
+        border-radius: $border-radius; 
+        border-left: $dark-grey 2px solid; 
+        border-right: $dark-grey 2px solid;
+        .error {
+          color: $red !important;
+        } 
+      }
+      .player-div {
+        display: inline-block;
+        width: 560px;
+      }
+    }
+    .main {
+      display: flex;
+      justify-content: space-between;
+      .panel {
+        width: 100%;
+        display: inline-block;
+        &.left, &.right {
+          width: 50%
+        }
+        &.preview {
+          width: 50%;
+          margin-right: 15px;
+        }
+        .input {
+          padding: 10px 30px;
+        }
+        .tile-preview {
+          transform: scale(0.9, 0.9);
+        }
+      }
+    }
+  }
+
+  .audio_player {
+    width: 100%;
+  }
+
+  input[type="checkbox"] {
+    vertical-align: text-bottom;
+    margin-top: 30px;
+  }
+
+  span {
+    &.error {
+      position: absolute;
+      color: $red;
+      text-align: center;
+      width: 100%;
+      background-color: $black-transparent;
+      font-size: 18px;
+      box-shadow: $box-shadow-down;
+      cursor: default;
+      z-index: 10; 
+    }
+  }
+}

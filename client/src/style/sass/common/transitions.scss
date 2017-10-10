@@ -1,0 +1,33 @@
+@mixin transition-fade-in-out($speed-ms) {
+  &-enter {
+    opacity: 0.01;
+  }
+  &-enter-active {
+    opacity: 1;
+    transition: opacity $speed-ms ease-in;
+  }
+  &-leave {
+    opacity: 1;
+  }
+  &-leave-active {
+    opacity: 0.01;
+    transition: opacity $speed-ms ease-in;
+  }
+}
+
+@mixin transition-slide-from-right($start, $end, $speed-ms) {
+  &-enter {
+    right: $start;
+  }
+  &-enter-active {
+    right: $end;
+    transition: right $speed-ms ease-in-out;
+  }
+  &-leave {
+    right: $end;
+  }
+  &-leave-active {
+    right: $start;
+    transition: right $speed-ms ease-in-out;
+  }
+}

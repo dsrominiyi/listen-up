@@ -271,7 +271,7 @@ $audio_player_progress_bg_color: #4a4a4a !default;
   @extend .gradient-black;
   box-shadow: $box-shadow;
   width: 696px;
-  border-radius: 3px;
+  border-radius: $border-radius;
   margin-bottom: 2px;
   border: $border-outer;
   .audio_info {

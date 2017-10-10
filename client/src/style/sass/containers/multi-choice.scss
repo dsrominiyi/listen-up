@@ -1,0 +1,23 @@
+.multi-choice {
+
+  .content {
+    min-width: 701px;
+    background-image: radial-gradient(circle at center, $lilac 0, $lilac-white 100%);
+  }
+  
+  .text {
+    color: $dark-grey;
+    font-size: 22px;
+    font-weight: 600;
+    display: inline-block;
+    cursor: default;
+  }
+  
+  .main-container {
+    width: 700px;
+    .info {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

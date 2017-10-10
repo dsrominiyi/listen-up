@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { TextField, FlatButton } from 'material-ui';
 import GridTile from '../components/GridTile';
+import Notification from '../components/Notification';
 import AudioPlayer from 'react-responsive-audio-player';
 
 import { validate, ruleRunner } from '../validation/validate';
@@ -17,7 +19,7 @@ import ApiClient from '../services/ApiClient';
 
 import * as multiChoiceActions from '../actions/multiChoiceActions';
 
-import { BASE_URL } from '../constants/common';
+import { BASE_URL, STATUS_SUCCESS, STATUS_ERROR } from '../constants/common';
 import { RGB_GREY } from '../constants/style';
 
 const choiceValidations = [
@@ -36,7 +38,8 @@ class CreateQuestion extends Component {
 
   static propTypes = {
     createQuestion: PropTypes.func.isRequired,
-    isSaving: PropTypes.bool
+    saveResponse: PropTypes.object,
+    status: PropTypes.string
   }
 
   state = {
@@ -49,6 +52,7 @@ class CreateQuestion extends Component {
     formValid: false,
     showErrors: false,
     validationErrors: { choicesArray: [], other: {} },
+    notification: false,
     backgroundAnimation: new Bubbles(RGB_GREY)
   };
 
@@ -57,7 +61,7 @@ class CreateQuestion extends Component {
 
     if (field === 'text') {
       // remove non-alphanumeric chars
-      value = value.replace(/[^a-zA-Z\d\s:]/g, '');
+      value = value.replace(/[^a-z\d\s:]/gi, '');
     }
 
     choices[selectedTab - 1][field] = value;
@@ -129,12 +133,12 @@ class CreateQuestion extends Component {
     }
 
     if (field === 'text' || field === 'img') {
-      const choiceErrors = validationErrors.choicesArray[selectedTab-1];
+      const choiceErrors = validationErrors.choicesArray[selectedTab - 1];
       return choiceErrors[field];
     }
 
     return validationErrors.other[field];
-  } 
+  }
 
   onTabChange = tab => {
     const { choices } = this.state;
@@ -148,13 +152,13 @@ class CreateQuestion extends Component {
 
   renderTabs = () => [1, 2, 3, 4].map(i => {
     const { showErrors, validationErrors } = this.state;
-    const choiceErrors = validationErrors.choicesArray[i-1];
+    const choiceErrors = validationErrors.choicesArray[i - 1];
     const errors = showErrors && this.hasErrors(choiceErrors);
-    
+
     return (
       <Tab
         key={i}
-        className={`tab ${ errors ? 'error' : '' }`}
+        className={`tab ${errors ? 'error' : ''}`}
         label={i}
         value={i}
       />
@@ -164,25 +168,71 @@ class CreateQuestion extends Component {
   componentDidMount() {
     this.state.backgroundAnimation.start();
 
-    this.setState({ 
+    this.setState({
       validationErrors: {
         choicesArray: validate(this.state.choices, choiceValidations),
         other: validate(this.state, otherValidations)
-      } 
+      }
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { saveResponse } = this.props;
+    const nextSaveResponse = nextProps.saveResponse;
+    if (
+      !saveResponse
+      || (saveResponse.questionId !== nextSaveResponse.questionId)
+    ) {
+      this.setState({
+        notification: true,
+        text: '',
+        img: '',
+        soundSrc: '',
+        choices: [{},{},{},{}].map(() => ({ text: '', img: '' })),
+        answerIndex: null,
+        showErrors: false
+      });
+    }
   }
 
   componentWillUnmount() {
     this.state.backgroundAnimation.stop();
   }
 
-  render() {   
-    const selectAnswerError = this.errorFor('answerIndex'); 
+  render() {
+    const selectAnswerError = this.errorFor('answerIndex');
+    const { saveResponse } = this.props;
+    const textFieldStyles = {
+      inputStyle: Style.textFieldStyle,
+      floatingLabelStyle: Style.floatingLabelStyle,
+      underlineFocusStyle: Style.underlineFocusStyle,
+      underlineStyle: Style.underlineStyle,
+      hintStyle: Style.hintStyle
+    };
 
     return (
       <div className="create-question">
         <div className="content">
           <canvas className="background-canvas" />
+          <ReactCSSTransitionGroup
+            transitionName="notification"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
+          >
+            {
+              this.state.notification
+                ? (
+                  <Notification
+                    className="notification"
+                    type={saveResponse.success ? STATUS_SUCCESS : STATUS_ERROR}
+                    message={saveResponse.success ? 'Question created' : 'Error'}
+                    onDismiss={() => this.setState({ notification: false })}
+                  />
+                )
+                : ''
+            }
+          </ReactCSSTransitionGroup>
+
           <div className="main-container">
             <div className="creation-wizard">
 
@@ -218,11 +268,7 @@ class CreateQuestion extends Component {
                         hintText="http://audio.com/sound.mp3"
                         floatingLabelText="Sound URL"
                         errorText={this.errorFor('soundSrc')}
-                        inputStyle={Style.textFieldStyle}
-                        floatingLabelStyle={Style.floatingLabelStyle}
-                        underlineFocusStyle={Style.underlineFocusStyle}
-                        underlineStyle={Style.underlineStyle}
-                        hintStyle={Style.hintStyle}
+                        { ...textFieldStyles }
                       />
                     </div>
                   </div>
@@ -258,11 +304,7 @@ class CreateQuestion extends Component {
                         hintText="A dog barking"
                         floatingLabelText="Choice Text"
                         errorText={this.errorFor('text')}
-                        inputStyle={Style.textFieldStyle}
-                        floatingLabelStyle={Style.floatingLabelStyle}
-                        underlineFocusStyle={Style.underlineFocusStyle}
-                        underlineStyle={Style.underlineStyle}
-                        hintStyle={Style.hintStyle}
+                        { ...textFieldStyles }
                       />
                     </div>
 
@@ -275,11 +317,7 @@ class CreateQuestion extends Component {
                         hintText="http://images.com/dog.jpg"
                         floatingLabelText="Choice Image URL"
                         errorText={this.errorFor('img')}
-                        inputStyle={Style.textFieldStyle}
-                        floatingLabelStyle={Style.floatingLabelStyle}
-                        underlineFocusStyle={Style.underlineFocusStyle}
-                        underlineStyle={Style.underlineStyle}
-                        hintStyle={Style.hintStyle}
+                        { ...textFieldStyles }
                       />
                     </div>
 
@@ -299,7 +337,7 @@ class CreateQuestion extends Component {
                         className="tile"
                         text={this.state.text}
                         img={this.state.img || '/app/images/placeholder.jpg'}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </div>
                   </div>

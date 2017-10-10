@@ -1,5 +1,7 @@
+@import 'animations.scss';
 @import 'colours.scss';
 @import 'effects.scss';
+@import 'transitions.scss';
 
 html {
   @extend .gradient-black;
@@ -9,9 +11,7 @@ html {
 .content {
   position: relative;
   box-sizing: border-box;
-  box-shadow: 
-    inset -9px 11px 9px -8px rgba(51,51,51,0.68),
-    inset 10px -10px 9px -8px rgba(51,51,51,0.68);
+  box-shadow: $box-shadow-inset;
   .background-canvas {
     position: absolute;
     bottom: 0;
@@ -24,7 +24,3 @@ html {
   position: relative;
   z-index: 1;
 }
-
-
-
-
