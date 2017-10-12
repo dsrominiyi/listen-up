@@ -7,7 +7,7 @@ export const required = text => {
 };
 
 export const assetUrl = text => {
-  const expression = /[-a-z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b\/[-a-z0-9@:%_\+.~#?&//=]*/gi;
+  const expression = /[-a-z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b\/[-a-z0-9@:%_\+.~#?&//=]+/gi;
   const regex = new RegExp(expression);
 
   if (text.match(regex)) {
