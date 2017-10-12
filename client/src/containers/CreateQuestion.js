@@ -38,11 +38,10 @@ class CreateQuestion extends Component {
 
   static propTypes = {
     createQuestion: PropTypes.func.isRequired,
-    saveResponse: PropTypes.object,
-    status: PropTypes.string
+    saveResponse: PropTypes.object
   }
 
-  state = {
+  initFields = {
     selectedTab: 1,
     text: '',
     img: '',
@@ -51,7 +50,11 @@ class CreateQuestion extends Component {
     answerIndex: null,
     formValid: false,
     showErrors: false,
-    validationErrors: { choicesArray: [], other: {} },
+    validationErrors: { choicesArray: [], other: {} }
+  };
+
+  state = {
+    ...this.initFields,
     notification: false,
     backgroundAnimation: new Bubbles(RGB_GREY)
   };
@@ -114,13 +117,11 @@ class CreateQuestion extends Component {
 
     if (formValid) {
       const { choices, soundSrc, answerIndex } = this.state;
-
       const newQuestion = {
         choices,
         soundSrc,
         answerIndex
       };
-
       this.props.createQuestion(newQuestion);
     }
   }
@@ -177,21 +178,14 @@ class CreateQuestion extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { saveResponse } = this.props;
-    const nextSaveResponse = nextProps.saveResponse;
-    if (
-      !saveResponse
-      || (saveResponse.questionId !== nextSaveResponse.questionId)
-    ) {
-      this.setState({
-        notification: true,
-        text: '',
-        img: '',
-        soundSrc: '',
-        choices: [{},{},{},{}].map(() => ({ text: '', img: '' })),
-        answerIndex: null,
-        showErrors: false
-      });
+    const { saveResponse } = nextProps;
+
+    if (saveResponse) {
+      const newState = saveResponse.success 
+        ? { ...this.initFields, notification: true }
+        : { notification: true };
+
+      this.setState(newState);
     }
   }
 
@@ -364,10 +358,16 @@ class CreateQuestion extends Component {
 
 const api = new ApiClient(BASE_URL);
 
+const mapStateToProps = ({ createQuestion }) => {
+  return {
+    saveResponse: createQuestion.saveResponse
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     createQuestion: newQuestion => dispatch(multiChoiceActions.createQuestion(api, newQuestion))
   };
 };
 
-export default connect(null, mapDispatchToProps)(CreateQuestion);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateQuestion);

@@ -23,6 +23,14 @@ app.options('*', cors());
 register(di);
 routes(app, di);
 
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(500).send({
+    success: false,
+    error: 'An unknown error occurred'
+  });
+});
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });

@@ -1,4 +1,5 @@
-import { MongoClient  } from 'mongodb';
+import { MongoClient } from 'mongodb';
+import shuffleArray from '../util/shuffleArray';
 
 export default class MongoDb {
 
@@ -9,8 +10,8 @@ export default class MongoDb {
 
   async getConnection(dbName) {
     const { baseUrl } = this.config;
-    const url = baseUrl 
-      ? `${baseUrl}/${dbName}` 
+    const url = baseUrl
+      ? `${baseUrl}/${dbName}`
       : `mongodb://localhost:27017/${dbName}`;
 
     if (this.dbs[dbName]) {
@@ -22,61 +23,52 @@ export default class MongoDb {
     return this.dbs[dbName];
   }
 
-  async getNewMulti() {
-    try {
-      const db = await this.getConnection('multi_choice');
+  async getNewMulti(req) {
+    const db = await this.getConnection('multi_choice');
 
-      // Get random question
-      const question = await db.collection('questions')
-        .aggregate({ $sample: { size: 1 } }, { cursor: { batchSize: 1 } }).next();
-      const choices = await db.collection('choices')
-        .find({ _id: { $in : question.choiceIds} }).toArray();
-      const sound = await db.collection('sounds')
-        .findOne({ _id: question.soundId });
+    // Get random question
+    const question = await db.collection('questions')
+      .aggregate({ $sample: { size: 3 } }, { cursor: { batchSize: 3 } }).next();
+    let choices = await db.collection('choices')
+      .find({ _id: { $in: question.choiceIds } }).toArray();
+    const sound = await db.collection('sounds')
+      .findOne({ _id: question.soundId });
 
-      choices.forEach(choice => {
-        choice.id = choice._id;
-        delete choice._id;
-      });
+    choices = shuffleArray(choices);
 
-      sound.id = sound._id;
-      delete sound._id;
+    choices.forEach(choice => {
+      choice.id = choice._id;
+      delete choice._id;
+    });
 
-      db.close();
-      
-      return { choices, sound };
+    sound.id = sound._id;
+    delete sound._id;
 
-    } catch (err) {
-      console.error('Error!');
-      throw err;
-    }
+    db.close();
+
+    return { choices, sound };
   }
 
-  async createMulti(newQuestion) {
-    try {
-      const db = await this.getConnection('multi_choice');
+  async createMulti(req) {
+    const db = await this.getConnection('multi_choice');
 
-      const { choices, soundSrc, answerIndex } = newQuestion;
-      
-      let result = await db.collection('choices').insertMany(choices);
-      const choiceIds = result.insertedIds;
+    const { choices, soundSrc, answerIndex } =  req.body;
 
-      const answerId = choiceIds[answerIndex];
-      const sound = { src: soundSrc, answerId };
+    let result = await db.collection('choices').insertMany(choices);
+    const choiceIds = result.insertedIds;
 
-      result = await db.collection('sounds').insertOne(sound);
-      const soundId = result.insertedId;
-      const question = { choiceIds, soundId };
+    const answerId = choiceIds[answerIndex];
+    const sound = { src: soundSrc, answerId };
 
-      result = await db.collection('questions').insertOne(question);
+    result = await db.collection('sounds').insertOne(sound);
+    const soundId = result.insertedId;
+    const question = { choiceIds, soundId };
 
-      return {
-        success: true,
-        questionId: result.insertedId
-      };
-    } catch (err) {
-      console.error('Error!');
-      throw err;
-    }
+    result = await db.collection('questions').insertOne(question);
+
+    return {
+      success: true,
+      questionId: result.insertedId
+    };
   }
 }

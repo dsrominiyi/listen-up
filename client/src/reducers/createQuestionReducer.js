@@ -1,10 +1,8 @@
 import { MULTI_CHOICE_CREATE } from '../constants/actionTypes';
-import { STATUS_READY, STATUS_LOADING } from '../constants/common';
-import { PENDING, FULFILLED } from 'redux-promise-middleware';
+import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
 
 const initState = {
-  saveResponse: {},
-  status: STATUS_READY
+  saveResponse: null
 };
 
 const createQuestionReducer = (state = initState, { type, error, payload }) => {
@@ -12,17 +10,25 @@ const createQuestionReducer = (state = initState, { type, error, payload }) => {
   switch (type) {
     case `${MULTI_CHOICE_CREATE}_${PENDING}`:
       return {
-        ...state,
-        status: STATUS_LOADING
+        saveResponse: null
       };
       break;
+
     case `${MULTI_CHOICE_CREATE}_${FULFILLED}`:
       return {
         ...state,
-        saveResponse: payload,
-        status: STATUS_READY
+        saveResponse: payload
       };
       break;
+
+    case `${MULTI_CHOICE_CREATE}_${REJECTED}`:
+      const saveResponse = (payload && payload.error)
+        ? payload.error
+        : { success: false };
+      return {
+        ...state,
+        saveResponse
+      };
   }
 
   return state;

@@ -10,10 +10,10 @@
   height: 100%;
   transition: opacity 0.3s;
   &.correct {
-    background-image: radial-colour-transparent($y-center, $green);    
+    @include radial-colour-transparent($y-center, $green);    
   }
   &.wrong {
-    background-image: radial-colour-transparent($y-center, $red);    
+    @include radial-colour-transparent($y-center, $red);    
   }
   .msg {
     @extend .linear-wipe;

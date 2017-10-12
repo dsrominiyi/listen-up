@@ -1,5 +1,5 @@
-import registerHandlers from './handler/index';
-import registerServices from './service/index';
+import registerHandlers from './handler/_handler';
+import registerServices from './service/_service';
 
 export default function (di) {
 

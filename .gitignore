@@ -9,3 +9,4 @@
 # misc
 /client/npm-debug.log*
 .idea*
+.vscode*

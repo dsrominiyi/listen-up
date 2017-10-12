@@ -1,6 +1,6 @@
 import request from 'request-promise';
 
-export default class ApiClient {
+class ApiClient {
 
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
@@ -49,3 +49,5 @@ export default class ApiClient {
     });
   }
 }
+
+export default ApiClient;
