@@ -20,6 +20,7 @@ import { RGB_LILAC } from '../constants/style';
 class MultiChoice extends Component {
 
   static propTypes = {
+    description: PropTypes.string,
     choices: PropTypes.array.isRequired,
     sound: PropTypes.object.isRequired,
     maxPlays: PropTypes.number.isRequired,
@@ -112,7 +113,7 @@ class MultiChoice extends Component {
 
   render() {
 
-    const { choices, sound, maxPlays } = this.props;
+    const { choices, sound, description, maxPlays } = this.props;
     const { isCorrectAnswer, showOverlay, playCount, score } = this.state;
     const { PLAYING, STOPPED } = Sound.status;
 
@@ -141,7 +142,7 @@ class MultiChoice extends Component {
               }}
               playlist={[{
                 url: sound.src,
-                displayText: 'Name the sound!'
+                displayText: description || 'Name the sound!'
               }]}
               audioElementRef={ref => this.audioPlayer = ref}
             />
@@ -201,6 +202,7 @@ const api = new ApiClient(BASE_URL);
 
 const mapStateToProps = ({ multiChoice }) => {
   return {
+    description: multiChoice.description,
     choices: multiChoice.choices,
     sound: multiChoice.sound,
     maxPlays: multiChoice.maxPlays
@@ -209,7 +211,7 @@ const mapStateToProps = ({ multiChoice }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getNewQuestion: () => dispatch(multiChoiceActions.getNewQuestion(api))
+    getNewQuestion: () => dispatch(multiChoiceActions.getNewMulti(api))
   };
 };
 

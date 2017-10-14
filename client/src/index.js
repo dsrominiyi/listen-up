@@ -9,7 +9,7 @@ import promiseMiddleware from 'redux-promise-middleware';
 
 import AppBar from './components/AppBar';
 import MultiChoice from './containers/MultiChoice';
-import CreateQuestion from './containers/CreateQuestion';
+import CreateMulti from './containers/CreateMulti';
 
 import rootReducer from './reducers/_reducers';
 
@@ -35,7 +35,7 @@ render(
         <div>
           <Route path="/" component={AppBar} />
           <Route path="/multi" component={MultiChoice} />
-          <Route path="/create" component={CreateQuestion} />
+          <Route path="/create/multi" component={CreateMulti} />
         </div>
       </Router>
     </Provider>

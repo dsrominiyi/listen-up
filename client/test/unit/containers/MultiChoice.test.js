@@ -75,7 +75,7 @@ describe('<MultiChoice />', () => {
   });
 
   it('should retrieve a question when the component has mounted', () => {
-    const expectedAction = multiChoiceActions.getNewQuestion(api);
+    const expectedAction = multiChoiceActions.getNewMulti(api);
 
     component.instance().componentDidMount();
     expect(store.isActionDispatched(expectedAction)).to.equal(true);
@@ -216,7 +216,7 @@ describe('<MultiChoice />', () => {
     const overlay = component.find('.answer-overlay');
     overlay.props().onContinue();
 
-    const expectedAction = multiChoiceActions.getNewQuestion(api);
+    const expectedAction = multiChoiceActions.getNewMulti(api);
     expect(store.isActionDispatched(expectedAction)).to.equal(true);
   });
 

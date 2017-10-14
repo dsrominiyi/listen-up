@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
 import multiChoice from './multiChoiceReducer';
-import createQuestion from './createQuestionReducer';
+import createMulti from './createMultiReducer';
 
 
 export default combineReducers({
   multiChoice,
-  createQuestion
+  createMulti
 });

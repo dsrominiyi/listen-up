@@ -20,7 +20,7 @@ class AppBar extends Component {
     const { menuOpen } = this.state;
     const { history } = this.props;
 
-    const currentPage = history.location.pathname.replace('/', '');
+    const pathRoot = history.location.pathname.replace(/(\/)([a-z\-]+)(\/.+)?/gi, '$2');
 
     return (
       <div>
@@ -28,7 +28,7 @@ class AppBar extends Component {
           <div className="menu-button">
             <FlatButton
               fullWidth={true}
-              icon={<FontIcon className={`material-icons icon menu ${currentPage}`}>menu</FontIcon>}
+              icon={<FontIcon className={`material-icons icon menu ${pathRoot}`}>menu</FontIcon>}
               onClick={() => this.setState({ menuOpen: true })}
             />
           </div>

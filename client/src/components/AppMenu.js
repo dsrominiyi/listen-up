@@ -62,9 +62,9 @@ class AppMenu extends Component {
 
             <FlatButton
               fullWidth={true}
-              label="Create Question"
+              label="Create Multiple Choice Question"
               labelStyle={flatButtonLabel()}
-              onClick={() => route('/create')}
+              onClick={() => route('/create/multi')}
             />
           </div>
         </div>

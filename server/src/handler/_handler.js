@@ -20,7 +20,7 @@ export default function(di) {
     'handler.multi-choice.create',
     [ 'service.mongodb' ],
     (db) => (req, res, next) => {
-      db.createMulti().then(success(res), error(next));
+      db.createMulti(req.body).then(success(res), error(next));
     }
   );
   

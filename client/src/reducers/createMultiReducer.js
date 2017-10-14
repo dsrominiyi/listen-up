@@ -5,7 +5,7 @@ const initState = {
   saveResponse: null
 };
 
-const createQuestionReducer = (state = initState, { type, error, payload }) => {
+const createMultiReducer = (state = initState, { type, error, payload }) => {
 
   switch (type) {
     case `${MULTI_CHOICE_CREATE}_${PENDING}`:
@@ -34,4 +34,4 @@ const createQuestionReducer = (state = initState, { type, error, payload }) => {
   return state;
 };
 
-export default createQuestionReducer;
+export default createMultiReducer;

@@ -28,11 +28,13 @@ export default class MongoDb {
 
     // Get random question
     const question = await db.collection('questions')
-      .aggregate({ $sample: { size: 3 } }, { cursor: { batchSize: 3 } }).next();
+      .aggregate({ $sample: { size: 1 } }, { cursor: { batchSize: 1 } }).next();
     let choices = await db.collection('choices')
       .find({ _id: { $in: question.choiceIds } }).toArray();
     const sound = await db.collection('sounds')
       .findOne({ _id: question.soundId });
+    
+    db.close();
 
     choices = shuffleArray(choices);
 
@@ -44,15 +46,15 @@ export default class MongoDb {
     sound.id = sound._id;
     delete sound._id;
 
-    db.close();
+    const { description } = question;
 
-    return { choices, sound };
+    return { description, choices, sound };
   }
 
-  async createMulti(req) {
+  async createMulti(newQuestion) {
     const db = await this.getConnection('multi_choice');
 
-    const { choices, soundSrc, answerIndex } =  req.body;
+    const { description, choices, soundSrc, answerIndex } =  newQuestion;
 
     let result = await db.collection('choices').insertMany(choices);
     const choiceIds = result.insertedIds;
@@ -62,9 +64,11 @@ export default class MongoDb {
 
     result = await db.collection('sounds').insertOne(sound);
     const soundId = result.insertedId;
-    const question = { choiceIds, soundId };
+    const question = { description, choiceIds, soundId };
 
     result = await db.collection('questions').insertOne(question);
+
+    db.close();
 
     return {
       success: true,

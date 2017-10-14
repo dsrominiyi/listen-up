@@ -12,7 +12,7 @@ import AudioPlayer from 'react-responsive-audio-player';
 import { validate, ruleRunner } from '../validation/validate';
 import { required, assetUrl, answerIndex } from '../validation/rules';
 
-import * as Style from '../style/js/createQuestion';
+import * as Style from '../style/js/createMulti';
 import Bubbles from '../style/js/animation/Bubbles';
 
 import ApiClient from '../services/ApiClient';
@@ -34,19 +34,20 @@ const otherValidations = [
   ruleRunner('answerIndex', answerIndex)
 ];
 
-class CreateQuestion extends Component {
+class CreateMulti extends Component {
 
   static propTypes = {
-    createQuestion: PropTypes.func.isRequired,
+    createMulti: PropTypes.func.isRequired,
     saveResponse: PropTypes.object
   }
 
   initFields = {
     selectedTab: 1,
-    text: '',
-    img: '',
+    description: '',
+    text: '', // selected choice 
+    img: '', // "
     soundSrc: '',
-    choices: [{},{},{},{}].map(() => ({ text: '', img: '' })),
+    choices: [{}, {}, {}, {}].map(() => ({ text: '', img: '' })),
     answerIndex: null,
     formValid: false,
     showErrors: false,
@@ -116,13 +117,14 @@ class CreateQuestion extends Component {
     }
 
     if (formValid) {
-      const { choices, soundSrc, answerIndex } = this.state;
+      const { description, choices, soundSrc, answerIndex } = this.state;
       const newQuestion = {
+        description,
         choices,
         soundSrc,
         answerIndex
       };
-      this.props.createQuestion(newQuestion);
+      this.props.createMulti(newQuestion);
     }
   }
 
@@ -181,7 +183,7 @@ class CreateQuestion extends Component {
     const { saveResponse } = nextProps;
 
     if (saveResponse) {
-      const newState = saveResponse.success 
+      const newState = saveResponse.success
         ? { ...this.initFields, notification: true }
         : { notification: true };
 
@@ -205,7 +207,7 @@ class CreateQuestion extends Component {
     };
 
     return (
-      <div className="create-question">
+      <div className="create-multi">
         <div className="content">
           <canvas className="background-canvas" />
           <ReactCSSTransitionGroup
@@ -245,7 +247,8 @@ class CreateQuestion extends Component {
                       disableSeek={true}
                       cycle={false}
                       playlist={[{
-                        url: this.state.soundSrc
+                        url: this.state.soundSrc,
+                        displayText: this.state.description || 'Name the sound!'
                       }]}
                       audioElementRef={ref => this.audioPlayer = ref}
                     />
@@ -262,6 +265,20 @@ class CreateQuestion extends Component {
                         hintText="http://audio.com/sound.mp3"
                         floatingLabelText="Sound URL"
                         errorText={this.errorFor('soundSrc')}
+                        { ...textFieldStyles }
+                      />
+                    </div>
+                  </div>
+                  <div className="panel right">
+                    <div className="input">
+                      <TextField
+                        id="description"
+                        className="text-field"
+                        value={this.state.description}
+                        onChange={e => this.onFormUpdated({ description: e.target.value })}
+                        hintText="Name the sound!"
+                        floatingLabelText="Description"
+                        errorText={this.errorFor('description')}
                         { ...textFieldStyles }
                       />
                     </div>
@@ -297,7 +314,7 @@ class CreateQuestion extends Component {
                         onChange={e => this.updateChoice(e.target.value, 'text')}
                         hintText="A dog barking"
                         floatingLabelText="Choice Text"
-                        errorText={this.errorFor('text')}
+                        errorText={this.errorFor('fieldMap')}
                         { ...textFieldStyles }
                       />
                     </div>
@@ -358,16 +375,16 @@ class CreateQuestion extends Component {
 
 const api = new ApiClient(BASE_URL);
 
-const mapStateToProps = ({ createQuestion }) => {
+const mapStateToProps = ({ createMulti }) => {
   return {
-    saveResponse: createQuestion.saveResponse
+    saveResponse: createMulti.saveResponse
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    createQuestion: newQuestion => dispatch(multiChoiceActions.createQuestion(api, newQuestion))
+    createMulti: newQuestion => dispatch(multiChoiceActions.createMulti(api, newQuestion))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateQuestion);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateMulti);

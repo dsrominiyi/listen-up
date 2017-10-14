@@ -10,6 +10,7 @@ describe('multiChoiceReducer', () => {
   beforeEach(() => {
 
     state = {
+      description: '',
       choices: ['choices'],
       sound: { sound: ''},
       maxPlays: 4
@@ -32,7 +33,8 @@ describe('multiChoiceReducer', () => {
     const action = {
       type: `${MULTI_CHOICE_GET_NEW}_${FULFILLED}`,
       error: null,
-      payload: { 
+      payload: {
+        description: 'new question', 
         choices: ['new', 'choices'],
         sound: { sound: 'new' }
       }
@@ -41,6 +43,7 @@ describe('multiChoiceReducer', () => {
     const newState = multiChoiceReducer(state, action);
     expect(newState).to.deep.equal({
       ...state,
+      description: action.payload.description,
       choices: action.payload.choices,
       sound: action.payload.sound
     });
