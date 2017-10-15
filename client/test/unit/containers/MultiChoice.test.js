@@ -74,156 +74,171 @@ describe('<MultiChoice />', () => {
     initialise();
   });
 
-  it('should retrieve a question when the component has mounted', () => {
-    const expectedAction = multiChoiceActions.getNewMulti(api);
+  describe('mounting', () => {
 
-    component.instance().componentDidMount();
-    expect(store.isActionDispatched(expectedAction)).to.equal(true);
-  });
-
-  it('should not render the background animation if there are no choices', () => {
-    choices = [];
-    initialise();
-
-    component.instance().componentDidUpdate();
-    expect(bubbles.start).to.not.have.been.called;
-  });
-
-  it('should render the background animation and set animateBackground to true', () => {
-
-    component.instance().componentDidUpdate();
-    expect(bubbles.start).to.have.been.called;
-    expect(component.state().animateBackground).to.equal(true);
-  });
-
-  it('should not attempt to re-render the background animation if animateBackground is true', () => {
-
-    component.instance().componentDidUpdate();
-    expect(bubbles.start).to.have.been.called;
-    expect(component.state().animateBackground).to.equal(true);
-
-    bubbles.start.reset();
-    component.instance().componentDidUpdate();
-    expect(bubbles.start).to.not.have.been.called;
-    expect(component.state().animateBackground).to.equal(true);
-  });
-
-  it('should render the audio player', () => {
-    
-    const player = component.find('.audio-player');
-    expect(player.props().playlist[0].url).to.equal(sound.src);
-    expect(player.props().onMediaEvent.ended).to.equal(component.instance().incrementPlays);
-  });
-
-  it('should render the choice grid', () => {
-    
-    const grid = component.find('.choice-grid');
-    expect(grid.props().choices).to.equal(choices);
-  });
-
-  it('should increment the play count', () => {
-    
-    expect(component.state().playCount).to.equal(0);
-    component.instance().incrementPlays();
-    expect(component.state().playCount).to.equal(1);
-    component.instance().incrementPlays();
-    expect(component.state().playCount).to.equal(2);
-  });
+    it('should retrieve a question when the component has mounted', () => {
+      const expectedAction = multiChoiceActions.getNewMulti(api);
   
-  it('should increment the users score according to the play count on a correct choice', () => {
+      component.instance().componentDidMount();
+      expect(store.isActionDispatched(expectedAction)).to.equal(true);
+    });
+  });
+
+  describe('render', () => {
     
-    const correctAnswerId = sound.answerId;
-    component.instance().checkAnswer(correctAnswerId);
-    expect(component.state().score).to.equal(BASE_POINTS);
+    it('should not render the background animation if there are no choices', () => {
+      choices = [];
+      component.setProps({ choices });
+  
+      component.instance().componentDidUpdate();
+      expect(bubbles.start).to.not.have.been.called;
+    });
+  
+    it('should render the background animation and set animateBackground to true', () => {
+  
+      component.instance().componentDidUpdate();
+      expect(bubbles.start).to.have.been.called;
+      expect(component.state().animateBackground).to.equal(true);
+    });
+  
+    it('should not attempt to re-render the background animation if animateBackground is true', () => {
+  
+      component.instance().componentDidUpdate();
+      expect(bubbles.start).to.have.been.called;
+      expect(component.state().animateBackground).to.equal(true);
+  
+      bubbles.start.reset();
+      component.instance().componentDidUpdate();
+      expect(bubbles.start).to.not.have.been.called;
+      expect(component.state().animateBackground).to.equal(true);
+    });
+  
+    it('should render the audio player', () => {
+      
+      const player = component.find('.audio-player');
+      expect(player.props().playlist[0].url).to.equal(sound.src);
+      expect(player.props().onMediaEvent.ended).to.equal(component.instance().incrementPlays);
+    });
+  
+    it('should render the choice grid', () => {
+      
+      const grid = component.find('.choice-grid');
+      expect(grid.props().choices).to.equal(choices);
+    });
+  });
 
-    for (let playCount=1; playCount<=maxPlays; playCount++) {
-      initialise();
+  describe('game logic', () => { 
 
-      component.setState({ playCount });
+    it('should increment the play count', () => {
+      
+      expect(component.state().playCount).to.equal(0);
+      component.instance().incrementPlays();
+      expect(component.state().playCount).to.equal(1);
+      component.instance().incrementPlays();
+      expect(component.state().playCount).to.equal(2);
+    });
+    
+    it('should increment the users score according to the play count on a correct choice', () => {
+      
+      const correctAnswerId = sound.answerId;
       component.instance().checkAnswer(correctAnswerId);
-      expect(component.state().score).to.equal(Math.round(BASE_POINTS / playCount));
-    }
-  });
-
-  it('should set isCorrectAnswer and showOverlay to true on a correct choice', () => {
-    
-    const correctAnswerId = sound.answerId;
-    component.instance().checkAnswer(correctAnswerId);
-    expect(component.state().isCorrectAnswer).to.equal(true);
-    expect(component.state().showOverlay).to.equal(true);
-  });
-
-  it('should reset playCount on a correct choice', () => {
-    
-    const correctAnswerId = sound.answerId;
-    component.instance().checkAnswer(correctAnswerId);
-    expect(component.state().playCount).to.equal(0);
-  });
+      expect(component.state().score).to.equal(BASE_POINTS);
   
-  it('should set showOverlay to true on an incorrect choice', () => {
+      for (let playCount=1; playCount<=maxPlays; playCount++) {
+        initialise();
+  
+        component.setState({ playCount });
+        component.instance().checkAnswer(correctAnswerId);
+        expect(component.state().score).to.equal(Math.round(BASE_POINTS / playCount));
+      }
+    });
+  
+    it('should set isCorrectAnswer and showOverlay to true on a correct choice', () => {
+      
+      const correctAnswerId = sound.answerId;
+      component.instance().checkAnswer(correctAnswerId);
+      expect(component.state().isCorrectAnswer).to.equal(true);
+      expect(component.state().showOverlay).to.equal(true);
+    });
+  
+    it('should reset playCount on a correct choice', () => {
+      
+      const correctAnswerId = sound.answerId;
+      component.instance().checkAnswer(correctAnswerId);
+      expect(component.state().playCount).to.equal(0);
+    });
     
-    const wrongAnswerId = sound.answerId + 1;
-    component.instance().checkAnswer(wrongAnswerId);
-    expect(component.state().showOverlay).to.equal(true);
+    it('should set showOverlay to true on an incorrect choice', () => {
+      
+      const wrongAnswerId = sound.answerId + 1;
+      component.instance().checkAnswer(wrongAnswerId);
+      expect(component.state().showOverlay).to.equal(true);
+    });
+  
+    it('should reset playCount on an incorrect choice', () => {
+      
+      const wrongAnswerId = sound.answerId + 1;
+      component.instance().checkAnswer(wrongAnswerId);
+      expect(component.state().playCount).to.equal(0);
+    });
   });
 
-  it('should reset playCount on an incorrect choice', () => {
-    
-    const wrongAnswerId = sound.answerId + 1;
-    component.instance().checkAnswer(wrongAnswerId);
-    expect(component.state().playCount).to.equal(0);
+  describe('answer overlay', () => { 
+
+    it('should not render the answer overlay when showOverlay is false', () => {
+      
+      const overlay = component.find('.answer-overlay');
+      expect(overlay).to.have.length(0);
+    });
+  
+    it('should render the answer overlay when showOverlay is true', () => {
+      
+      const correctAnswerId = sound.answerId;
+      component.instance().checkAnswer(correctAnswerId);
+      
+      const overlay = component.find('.answer-overlay');
+      const correctChoice = choices.filter(choice => (choice.id === sound.answerId))[0];
+      expect(overlay).to.have.length(1);
+      expect(overlay.props().isCorrect).to.equal(component.state().isCorrectAnswer);
+      expect(overlay.props().correctChoice).to.equal(correctChoice);
+    });
+
+    it('should close the overlay and set isCorrectAnswer to false when onContinue is called', () => {
+      
+      const correctAnswerId = sound.answerId;
+      component.instance().checkAnswer(correctAnswerId);
+      
+      let overlay = component.find('.answer-overlay');
+      expect(overlay).to.have.length(1);
+  
+      overlay.props().onContinue();
+      expect(component.state().isCorrectAnswer).to.equal(false);
+      expect(component.state().showOverlay).to.equal(false);
+  
+      overlay = component.find('.answer-overlay');
+      expect(overlay).to.have.length(0);
+    });
+  
+    it('should retrieve a new question when onContinue is called', () => {
+      
+      const correctAnswerId = sound.answerId;
+      component.instance().checkAnswer(correctAnswerId);
+      
+      const overlay = component.find('.answer-overlay');
+      overlay.props().onContinue();
+  
+      const expectedAction = multiChoiceActions.getNewMulti(api);
+      expect(store.isActionDispatched(expectedAction)).to.equal(true);
+    });
   });
 
-  it('should not render the answer overlay when showOverlay is false', () => {
-    
-    const overlay = component.find('.answer-overlay');
-    expect(overlay).to.have.length(0);
-  });
+  describe('unmounting', () => { 
 
-  it('should render the answer overlay when showOverlay is true', () => {
-    
-    const correctAnswerId = sound.answerId;
-    component.instance().checkAnswer(correctAnswerId);
-    
-    const overlay = component.find('.answer-overlay');
-    const correctChoice = choices.filter(choice => (choice.id === sound.answerId))[0];
-    expect(overlay).to.have.length(1);
-    expect(overlay.props().isCorrect).to.equal(component.state().isCorrectAnswer);
-    expect(overlay.props().correctChoice).to.equal(correctChoice);
-  });
-
-  it('should close the overlay and set isCorrectAnswer to false when onContinue is called', () => {
-    
-    const correctAnswerId = sound.answerId;
-    component.instance().checkAnswer(correctAnswerId);
-    
-    let overlay = component.find('.answer-overlay');
-    expect(overlay).to.have.length(1);
-
-    overlay.props().onContinue();
-    expect(component.state().isCorrectAnswer).to.equal(false);
-    expect(component.state().showOverlay).to.equal(false);
-
-    overlay = component.find('.answer-overlay');
-    expect(overlay).to.have.length(0);
-  });
-
-  it('should retrieve a new question when onContinue is called', () => {
-    
-    const correctAnswerId = sound.answerId;
-    component.instance().checkAnswer(correctAnswerId);
-    
-    const overlay = component.find('.answer-overlay');
-    overlay.props().onContinue();
-
-    const expectedAction = multiChoiceActions.getNewMulti(api);
-    expect(store.isActionDispatched(expectedAction)).to.equal(true);
-  });
-
-  it('should stop the background animation before unmounting', () => {
-
-    component.instance().componentWillUnmount();
-    expect(bubbles.stop).to.have.been.called;
+    it('should stop the background animation before unmounting', () => {
+      
+      component.instance().componentWillUnmount();
+      expect(bubbles.stop).to.have.been.called;
+    });
   });
 
 });
