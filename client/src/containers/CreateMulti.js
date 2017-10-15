@@ -22,18 +22,6 @@ import * as multiChoiceActions from '../actions/multiChoiceActions';
 import { BASE_URL, STATUS_SUCCESS, STATUS_ERROR } from '../constants/common';
 import { RGB_GREY } from '../constants/style';
 
-const choiceValidations = [
-  ruleRunner('img', assetUrl),
-  ruleRunner('text', required),
-  ruleRunner('img', required)
-];
-
-const otherValidations = [
-  ruleRunner('soundSrc', assetUrl),
-  ruleRunner('soundSrc', required),
-  ruleRunner('answerIndex', answerIndex)
-];
-
 class CreateMulti extends Component {
 
   static propTypes = {
@@ -59,6 +47,18 @@ class CreateMulti extends Component {
     notification: false,
     backgroundAnimation: new Bubbles(RGB_GREY)
   };
+
+  choiceValidations = [
+    ruleRunner('img', assetUrl),
+    ruleRunner('text', required),
+    ruleRunner('img', required)
+  ];
+
+  otherValidations = [
+    ruleRunner('soundSrc', assetUrl),
+    ruleRunner('soundSrc', required),
+    ruleRunner('answerIndex', answerIndex)
+  ];
 
   updateChoice = (value, field) => {
     const { selectedTab, choices } = this.state;
@@ -90,8 +90,8 @@ class CreateMulti extends Component {
     };
 
     const validationErrors = {
-      choicesArray: validate(newState.choices, choiceValidations),
-      other: validate(newState, otherValidations)
+      choicesArray: validate(newState.choices, this.choiceValidations),
+      other: validate(newState, this.otherValidations)
     };
 
     const hasInvalidChoice = () => validationErrors.choicesArray
@@ -173,8 +173,8 @@ class CreateMulti extends Component {
 
     this.setState({
       validationErrors: {
-        choicesArray: validate(this.state.choices, choiceValidations),
-        other: validate(this.state, otherValidations)
+        choicesArray: validate(this.state.choices, this.choiceValidations),
+        other: validate(this.state, this.otherValidations)
       }
     });
   }
@@ -334,6 +334,7 @@ class CreateMulti extends Component {
 
                     <div className="input">
                       <input
+                        id="answerIndex"
                         type="checkbox"
                         checked={this.state.answerIndex === this.state.selectedTab - 1}
                         onChange={e => this.setAnswer(e.target.checked)}
@@ -358,6 +359,7 @@ class CreateMulti extends Component {
               <div className="footer">
                 <div className="button">
                   <FlatButton
+                    id="save"
                     fullWidth={true}
                     label="Save"
                     labelStyle={Style.labelStyle(!this.state.formValid, this.state.showErrors)}

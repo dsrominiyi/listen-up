@@ -1,7 +1,7 @@
 import { MULTI_CHOICE_CREATE } from '../constants/actionTypes';
 import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
 
-const initState = {
+export const initState = {
   saveResponse: null
 };
 

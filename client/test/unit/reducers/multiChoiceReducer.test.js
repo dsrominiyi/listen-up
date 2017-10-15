@@ -29,7 +29,7 @@ describe('multiChoiceReducer', () => {
     expect(newState).to.deep.equal(state);
   });
 
-  it('should update the sound and choices when a new question is retrieved', () => {
+  it('should update the props when a new question is retrieved', () => {
     const action = {
       type: `${MULTI_CHOICE_GET_NEW}_${FULFILLED}`,
       error: null,

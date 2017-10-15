@@ -40,6 +40,8 @@ class AppMenu extends Component {
         <div className="menu-box" ref={node => this.menuBox = node}>
           <div className="home-button">
             <FlatButton
+              id="home"
+              className="button"
               fullWidth={true}
               icon={<FontIcon className={'material-icons icon home'}>home</FontIcon>}
               onClick={() => route('/')}
@@ -50,6 +52,7 @@ class AppMenu extends Component {
             <div className="category">Game Modes</div>
 
             <FlatButton
+              id="multi"
               fullWidth={true}
               label="Multiple Choice"
               labelStyle={flatButtonLabel(HEX_LILAC)}
@@ -61,6 +64,7 @@ class AppMenu extends Component {
             <div className="category">Tools</div>
 
             <FlatButton
+              id="createMulti"
               fullWidth={true}
               label="Create Multiple Choice Question"
               labelStyle={flatButtonLabel()}

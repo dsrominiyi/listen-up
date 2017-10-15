@@ -27,6 +27,7 @@ class AppBar extends Component {
         <div className="app-bar">
           <div className="menu-button">
             <FlatButton
+              className="button"
               fullWidth={true}
               icon={<FontIcon className={`material-icons icon menu ${pathRoot}`}>menu</FontIcon>}
               onClick={() => this.setState({ menuOpen: true })}

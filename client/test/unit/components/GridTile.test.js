@@ -3,7 +3,7 @@ import 'enzyme/mount';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import GridTile from '../../../../src/components/GridTile';
+import GridTile from '../../../src/components/GridTile';
 
 describe('<GridTile />', () => {
 
