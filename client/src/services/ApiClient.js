@@ -8,6 +8,7 @@ class ApiClient {
 
   async get(endpoint, params) {
     const url = `${this.baseUrl}${endpoint}`;
+    console.log(url);
 
     return await request({
       url,

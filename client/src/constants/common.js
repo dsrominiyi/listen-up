@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:6307';
+export const BASE_URL = 'http://52.56.137.29:6307';
 
 export const BASE_POINTS = 100;
 

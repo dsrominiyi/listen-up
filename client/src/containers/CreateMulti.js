@@ -314,7 +314,7 @@ class CreateMulti extends Component {
                         onChange={e => this.updateChoice(e.target.value, 'text')}
                         hintText="A dog barking"
                         floatingLabelText="Choice Text"
-                        errorText={this.errorFor('fieldMap')}
+                        errorText={this.errorFor('text')}
                         { ...textFieldStyles }
                       />
                     </div>

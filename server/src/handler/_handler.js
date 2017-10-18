@@ -1,6 +1,8 @@
 export default function(di) {
 
   const success = res => result => {
+    console.log('response:');
+    console.log(result);
     res.send(result);
   };
 

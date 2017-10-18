@@ -15,6 +15,11 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
+app.use((req, res, next) => {
+  console.log(`request: ${req.method} ${req.url}`);
+  next();
+});
+
 app.use(cors({ origin: clientUrl }));
 app.use(bodyParser.json());
 
