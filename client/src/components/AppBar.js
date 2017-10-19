@@ -20,7 +20,7 @@ class AppBar extends Component {
     const { menuOpen } = this.state;
     const { history } = this.props;
 
-    const pathRoot = history.location.pathname.replace(/(\/)([a-z\-]+)(\/.+)?/gi, '$2');
+    const pathRoot = history.location.pathname.replace(/(\/)([a-z0-9\-\.]+)(\/.+)?/gi, '$2');
 
     return (
       <div>
