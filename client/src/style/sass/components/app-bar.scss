@@ -5,23 +5,42 @@
   .menu-button {
     width: 50px;
   }
-  .app-logo {
-    width: 50px;
-    cursor: default;
-    text-align: center;
-    transform: scale(-1, 1);
-    padding-top: 6px;
+}
+
+.icon {
+  font-size: 26px !important;
+  &.menu.multi {
+    color: $lilac-white !important;
   }
+  &.menu.create {
+    color: $white !important;
+  }
+  &.app {
+    color: $dark-grey !important;
+  }
+}
+
+
+.app-logo {
+  width: 50px;
+  cursor: default;
+  text-align: center;
+  padding-top: 6px;
   .icon {
-    font-size: 26px !important;
-    &.menu.multi {
-      color: $lilac-white !important;
-    }
-    &.menu.create {
-      color: $white !important;
-    }
-    &.app {
-      color: $dark-grey !important;
+    transform: scale(-1, 1);
+  }
+
+  &.xl {
+    cursor: pointer;
+    position: fixed;
+    width: 100%;
+    padding-top: 70px;
+    .icon {
+      font-size: 350px !important;
+      text-shadow: $text-shadow;
+      &:hover {
+        color: $grey !important;
+      }
     }
   }
 }

@@ -20,25 +20,37 @@ class AppBar extends Component {
     const { menuOpen } = this.state;
     const { history } = this.props;
 
-    const pathRoot = history.location.pathname.replace(/(\/)([a-z0-9\-\.]+)(\/.+)?/gi, '$2');
+    const pathRoot = history.location.pathname.replace(/(\/)([a-z\-]+)(\/.+)?/gi, '$2');
+    const homePage = (pathRoot === '/');
+
+    const menuButton = (
+      <div className="menu-button">
+        <FlatButton
+          className="button"
+          fullWidth={true}
+          icon={<FontIcon className={`material-icons icon menu ${pathRoot}`}>menu</FontIcon>}
+          onClick={() => this.setState({ menuOpen: true })}
+        />
+      </div>
+    );
+
+    const appLogo = (
+      <div 
+        className={`app-logo ${homePage ? 'xl hvr-pulse-grow-active' : ''}`}
+        onClick={homePage ? () => this.setState({ menuOpen: true }) : () => {} }
+      >
+        <FontIcon className="material-icons app icon">hearing</FontIcon>
+      </div>
+    );
 
     return (
       <div>
         <div className="app-bar">
-          <div className="menu-button">
-            <FlatButton
-              className="button"
-              fullWidth={true}
-              icon={<FontIcon className={`material-icons icon menu ${pathRoot}`}>menu</FontIcon>}
-              onClick={() => this.setState({ menuOpen: true })}
-            />
-          </div>
-
-
-          <div className="app-logo">
-            <FontIcon className="material-icons app icon">hearing</FontIcon>
-          </div>
+          { homePage ? '' : menuButton }
+          { homePage ? '' : appLogo }
         </div>
+
+        { homePage ? appLogo : '' }
 
         <ReactCSSTransitionGroup
           transitionName="app-menu"
