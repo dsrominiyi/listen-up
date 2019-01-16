@@ -1,4 +1,4 @@
-# <a href="http://52.56.137.29" target="_blank">Listen Up</a>
+# Listen Up
 
 ### A browser based POC for a mobile game.
 
